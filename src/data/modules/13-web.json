@@ -1,0 +1,93 @@
+{
+  "id": "web",
+  "title": "Nginx, прокси и веб-эксплуатация",
+  "order": 13,
+  "color": "#F2A93B",
+  "lesson": "Почти в каждой инфраструктуре перед приложением стоит слой прокси: nginx, traefik, envoy или облачный балансировщик. Он принимает трафик, завершает TLS, отдаёт статику, распределяет запросы между копиями приложения и защищает его от перегрузки.\n\nПонимать этот слой нужно потому, что именно он формирует то, что видит пользователь. Коды 502, 503 и 504 приходят от прокси, а не от приложения. Таймауты прокси определяют, сколько может длиться запрос. Заголовки, которые прокси добавляет или забывает добавить, определяют, увидит ли приложение реальный IP клиента и правильную схему https.\n\nВторая важная функция — раздача статики и кэширование. Файлы с хэшем в имени можно кэшировать навсегда, а index.html — нельзя, иначе пользователи не получат новую версию. Правильные заголовки Cache-Control экономят трафик и делают сайт быстрым без единой строчки кода.\n\nТретья тема — защита. Ограничение скорости запросов (rate limit) спасает от перебора паролей и простого флуда, ограничение размера тела запроса — от загрузки гигабайтных файлов, а таймауты — от медленных соединений, которые держат ресурсы. Плюс базовые заголовки безопасности и обязательный редирект с http на https.\n\nОтдельно стоит освоить graceful reload. Nginx умеет применять новую конфигурацию без разрыва текущих соединений, но только если конфигурация валидна — поэтому перед перезагрузкой всегда выполняют проверку синтаксиса. Это простая привычка, которая предотвращает падение всего сайта из-за забытой точки с запятой.\n\nИ логи: access-лог отвечает на вопросы «сколько запросов, какие коды, как долго», error-лог — «почему сломалось». Полезно сразу настроить формат с временем ответа и upstream-статусом, иначе при инциденте окажется, что данных для разбора нет.",
+  "cards": [
+    {
+      "id": "web-1",
+      "question": "Как выглядит минимальный рабочий конфиг nginx для приложения?",
+      "answer": "Блок server слушает 443 с сертификатом, location передаёт запросы в upstream приложения и добавляет заголовки с реальным IP и схемой. Отдельный server на 80 делает редирект на https. Это база, от которой строится всё остальное.",
+      "example": "upstream app { server 127.0.0.1:8000; keepalive 32; }\n\nserver {\n  listen 443 ssl http2;\n  server_name api.example.com;\n  location / {\n    proxy_pass http://app;\n    proxy_set_header Host $host;\n    proxy_set_header X-Real-IP $remote_addr;\n    proxy_set_header X-Forwarded-Proto $scheme;\n  }\n}"
+    },
+    {
+      "id": "web-2",
+      "question": "Как перезагружать nginx без простоя?",
+      "answer": "Сначала nginx -t проверяет конфигурацию, затем reload запускает новые рабочие процессы с новым конфигом, а старые дорабатывают текущие соединения. Restart, в отличие от reload, разрывает соединения, поэтому в проде используют именно reload.",
+      "example": "nginx -t && systemctl reload nginx\n\n# в контейнере\ndocker exec web nginx -t && docker exec web nginx -s reload"
+    },
+    {
+      "id": "web-3",
+      "question": "Какие таймауты нужно настроить и почему?",
+      "answer": "proxy_connect_timeout — сколько ждать соединения с приложением, proxy_read_timeout — сколько ждать ответа, client_body_timeout — сколько ждать тело запроса от клиента. Слишком большие значения приводят к накоплению висящих соединений, слишком маленькие — к обрыву легитимных долгих запросов.",
+      "example": "proxy_connect_timeout 3s;\nproxy_send_timeout   30s;\nproxy_read_timeout   30s;\nsend_timeout         30s;\nclient_max_body_size 20m;"
+    },
+    {
+      "id": "web-4",
+      "question": "Как правильно настроить кэширование статики?",
+      "answer": "Файлы с хэшем в имени (app.9f2c1.js) кэшируются надолго и помечаются immutable, а index.html — не кэшируется, чтобы пользователь всегда получал ссылки на новые файлы. Ошибка в обратную сторону приводит к тому, что после релиза у людей остаётся старая версия.",
+      "example": "location ~* \\.(js|css|woff2|png)$ {\n  add_header Cache-Control 'public, max-age=31536000, immutable';\n}\nlocation = /index.html {\n  add_header Cache-Control 'no-cache';\n}"
+    },
+    {
+      "id": "web-5",
+      "question": "Как ограничить частоту запросов?",
+      "answer": "Через limit_req_zone: задаётся зона по ключу (например, IP) и допустимая скорость, а burst разрешает короткие всплески. Это дешёвая защита логина от перебора паролей и API от случайного флуда клиентом.",
+      "example": "limit_req_zone $binary_remote_addr zone=login:10m rate=5r/m;\n\nlocation /api/login {\n  limit_req zone=login burst=5 nodelay;\n  proxy_pass http://app;\n}"
+    },
+    {
+      "id": "web-6",
+      "question": "Что писать в access-лог для нормальной диагностики?",
+      "answer": "Кроме стандартных полей — время обработки запроса, время ответа upstream, статус upstream и идентификатор запроса. Без этих полей невозможно отличить «медленно у нас» от «медленно у бэкенда» и связать записи прокси с логами приложения.",
+      "example": "log_format main '$remote_addr $status $request_time $upstream_response_time '\n                '$upstream_status \"$request\" rid=$request_id';\naccess_log /var/log/nginx/access.log main;\nproxy_set_header X-Request-Id $request_id;"
+    },
+    {
+      "id": "web-7",
+      "question": "Как настроить надёжный TLS?",
+      "answer": "Только TLS 1.2 и 1.3, современные шифры, полная цепочка сертификатов, HSTS для принудительного https и включённый OCSP stapling. Автоматическое обновление сертификатов обязательно, а на срок годности всё равно ставят алерт.",
+      "example": "ssl_protocols TLSv1.2 TLSv1.3;\nssl_prefer_server_ciphers off;\nssl_session_cache shared:SSL:10m;\nadd_header Strict-Transport-Security 'max-age=31536000; includeSubDomains' always;"
+    },
+    {
+      "id": "web-8",
+      "question": "Как балансировать между несколькими бэкендами?",
+      "answer": "В upstream перечисляют серверы и выбирают метод: round-robin по умолчанию, least_conn для долгих запросов, ip_hash для привязки. Параметры max_fails и fail_timeout временно исключают упавший бэкенд, а backup-сервер включается только при отказе основных.",
+      "example": "upstream app {\n  least_conn;\n  server 10.0.1.10:8000 max_fails=3 fail_timeout=10s;\n  server 10.0.1.11:8000 max_fails=3 fail_timeout=10s;\n  server 10.0.1.12:8000 backup;\n}"
+    },
+    {
+      "id": "web-9",
+      "question": "Что делать при ошибке 504 от nginx?",
+      "answer": "Это значит, что приложение не ответило за proxy_read_timeout. Разбор идёт с двух сторон: смотрим долгие запросы в приложении и базе, а также не упирается ли пул воркеров. Увеличение таймаута — это лечение симптома, а не причины.",
+      "example": "grep ' 504 ' /var/log/nginx/access.log | tail\n# смотрим upstream_response_time и медленные SQL\n# частая причина: все воркеры заняты долгими запросами"
+    },
+    {
+      "id": "web-10",
+      "question": "Зачем нужны заголовки безопасности?",
+      "answer": "Они включают защитные механизмы браузера: HSTS запрещает http, X-Frame-Options защищает от кликджекинга, X-Content-Type-Options — от подмены типов, Content-Security-Policy ограничивает источники скриптов. Это бесплатная защита без изменения кода приложения.",
+      "example": "add_header X-Frame-Options SAMEORIGIN always;\nadd_header X-Content-Type-Options nosniff always;\nadd_header Referrer-Policy strict-origin-when-cross-origin always;\nadd_header Content-Security-Policy \"default-src 'self'\" always;"
+    },
+    {
+      "id": "web-11",
+      "question": "Как прокси должен обрабатывать WebSocket и SSE?",
+      "answer": "Нужны заголовки Upgrade и Connection и версия HTTP 1.1, а также большой read-таймаут, иначе долгие соединения будут разрываться каждые 60 секунд. Для потоковых ответов дополнительно отключают буферизацию.",
+      "example": "location /ws {\n  proxy_http_version 1.1;\n  proxy_set_header Upgrade $http_upgrade;\n  proxy_set_header Connection 'upgrade';\n  proxy_read_timeout 3600s;\n  proxy_buffering off;\n}"
+    },
+    {
+      "id": "web-12",
+      "question": "Чем traefik и envoy отличаются от nginx в контейнерной среде?",
+      "answer": "Они умеют динамически обновлять маршруты из API Kubernetes или docker, без правки файлов и reload. Nginx мощнее в тонких настройках и статике, но в кластере обычно используют ingress-контроллер, который сам генерирует конфигурацию из объектов Ingress.",
+      "example": "# nginx: файл конфига + reload\n# traefik: labels на контейнере\nlabels:\n  - traefik.http.routers.api.rule=Host(`api.example.com`)\n  - traefik.http.services.api.loadbalancer.server.port=8000"
+    },
+    {
+      "id": "web-13",
+      "question": "Как отдавать SPA и API с одного домена?",
+      "answer": "Запросы к /api проксируются в бэкенд, остальные пути отдают статику с фолбэком на index.html, чтобы работали клиентские маршруты. Порядок и специфичность location критичны: более общий блок не должен перехватывать /api.",
+      "example": "location /api/ { proxy_pass http://app; }\nlocation / {\n  root /var/www/spa;\n  try_files $uri $uri/ /index.html;\n}"
+    },
+    {
+      "id": "web-14",
+      "question": "Как сжимать ответы и что не нужно сжимать?",
+      "answer": "Текстовые типы (HTML, CSS, JS, JSON) сжимают gzip или brotli — это заметно ускоряет загрузку. Уже сжатые форматы (изображения, видео, архивы) сжимать бессмысленно: вы потратите CPU без выигрыша. Порог gzip_min_length избавляет от сжатия крошечных ответов.",
+      "example": "gzip on;\ngzip_types text/css application/javascript application/json image/svg+xml;\ngzip_min_length 1024;\ngzip_comp_level 5;"
+    }
+  ]
+}

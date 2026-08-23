@@ -1,0 +1,100 @@
+@import '@fontsource/space-grotesk/500.css';
+@import '@fontsource/space-grotesk/700.css';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/500.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-bg text-slate-200 font-sans antialiased;
+    background-image: radial-gradient(circle at 20% -10%, rgba(124, 140, 255, 0.08), transparent 45%),
+      radial-gradient(circle at 90% 0%, rgba(79, 209, 165, 0.06), transparent 40%);
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display;
+  }
+
+  ::selection {
+    background: rgba(124, 140, 255, 0.35);
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #1E2636 transparent;
+  }
+}
+
+@layer components {
+  .panel {
+    @apply bg-panel border border-border rounded-xl;
+  }
+
+  .term-underline {
+    text-decoration: underline dotted;
+    text-underline-offset: 3px;
+    @apply font-mono text-[0.95em] cursor-help decoration-slate-500;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-border px-4 py-2
+           text-sm font-medium transition-colors duration-150 hover:bg-white/5
+           focus:outline-none focus-visible:ring-2 focus-visible:ring-agent/60 disabled:opacity-40
+           disabled:cursor-not-allowed;
+  }
+
+  .code-block {
+    @apply font-mono text-[12.5px] leading-relaxed whitespace-pre-wrap break-words
+           bg-black/40 border border-border rounded-lg p-3 text-slate-300;
+  }
+}
+
+.flip-scene {
+  perspective: 1400px;
+}
+
+.flip-inner {
+  transform-style: preserve-3d;
+  transition: transform 330ms ease-out;
+  will-change: transform;
+}
+
+.flip-inner.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.flip-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.flip-face-back {
+  transform: rotateY(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .flip-inner {
+    transition: none;
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "id": "ansible",
+  "title": "Ansible и управление конфигурацией",
+  "order": 9,
+  "color": "#F2A93B",
+  "lesson": "Terraform создаёт серверы, но кто-то должен их настроить: поставить пакеты, разложить конфиги, создать пользователей, запустить сервисы. Делать это руками по SSH на двадцати машинах — путь к тому, что все двадцать окажутся разными.\n\nAnsible решает задачу просто: у него нет агентов, он подключается по SSH и выполняет задачи, описанные в YAML. Вы пишете, каким должно быть состояние («пакет nginx установлен», «файл конфига такой», «служба запущена»), а не последовательность команд. Из-за этого плейбук можно запускать сколько угодно раз — изменения применяются только там, где реальность отличается от описания.\n\nСтруктура простая: инвентарь описывает хосты и группы, плейбук говорит, какие роли применить к каким группам, роль — переиспользуемый набор задач с шаблонами и переменными. Конфиги генерируют шаблонами Jinja2, поэтому один шаблон обслуживает и stage, и prod с разными значениями.\n\nОсобое внимание — идемпотентности. Модули Ansible идемпотентны по природе, но модуль command или shell — нет: он просто выполняет команду. Поэтому для таких задач добавляют условия (creates, when) или проверку changed_when, иначе плейбук будет каждый раз рапортовать об изменениях, которых нет.\n\nВажный практический приём — порционное применение. Флаг --check с --diff показывает, что изменится, --limit ограничивает хосты, а serial в плейбуке катит обновление по несколько машин за раз, чтобы сервис не упал целиком. Для веб-серверов это фактически rolling-деплой без Kubernetes.\n\nИ безопасность: секреты хранят в ansible-vault в зашифрованном виде, а привилегии повышают через become только там, где это нужно. Логи выполнения полезно сохранять, чтобы после инцидента понимать, что именно и когда меняли на серверах.",
+  "cards": [
+    {
+      "id": "ansible-1",
+      "question": "Чем Ansible отличается от bash-скриптов?",
+      "answer": "{{term:Ansible}} декларативен и идемпотентен: описываете желаемое состояние, повторный запуск безопасен. Плюс он работает сразу на группе хостов, умеет откатывать по ошибке и не требует агентов — только {{term:SSH}} и Python на целевой машине.",
+      "example": "# bash: упадёт при повторе\nuseradd deploy && apt install -y nginx\n\n# ansible: сколько угодно раз\n- user: { name: deploy, state: present }\n- apt:  { name: nginx, state: present }"
+    },
+    {
+      "id": "ansible-2",
+      "question": "Что такое инвентарь?",
+      "answer": "{{term:инвентарь}} — список хостов, разбитый на группы, с переменными для каждой группы. Именно он позволяет писать плейбук один раз и применять его к stage и prod, меняя только данные, а не логику.",
+      "example": "all:\n  children:\n    web:\n      hosts:\n        web1.example.com:\n        web2.example.com:\n      vars: { nginx_workers: 4 }\n    db:\n      hosts: { db1.example.com: }"
+    },
+    {
+      "id": "ansible-3",
+      "question": "Как устроен плейбук?",
+      "answer": "{{term:плейбук}} — YAML-файл: к каким хостам применяется, с какими правами, какие задачи или {{term:роль}}и выполнить. Задачи используют модули (apt, copy, template, service), а handlers срабатывают только если что-то реально изменилось.",
+      "example": "- hosts: web\n  become: true\n  tasks:\n    - apt: { name: nginx, state: present }\n    - template:\n        src: nginx.conf.j2\n        dest: /etc/nginx/nginx.conf\n      notify: reload nginx\n  handlers:\n    - name: reload nginx\n      service: { name: nginx, state: reloaded }"
+    },
+    {
+      "id": "ansible-4",
+      "question": "Как хранить секреты в Ansible?",
+      "answer": "Через ansible-vault: файл с переменными шифруется и коммитится в git уже зашифрованным, пароль хранится отдельно (в CI — в секретах пайплайна). Открытым текстом {{term:секрет}}ы в репозитории не лежат никогда.",
+      "example": "ansible-vault create group_vars/prod/vault.yml\nansible-playbook site.yml --ask-vault-pass\n# в CI: --vault-password-file <(echo \"$VAULT_PASS\")"
+    },
+    {
+      "id": "ansible-5",
+      "question": "Как проверить плейбук перед применением к проду?",
+      "answer": "Сначала --check (dry-run) с --diff, чтобы увидеть, что изменится, затем ограничение по хостам через --limit и теги, чтобы катить порционно. Для серьёзных ролей — тесты в одноразовых контейнерах или виртуалках.",
+      "example": "ansible-playbook site.yml --check --diff\nansible-playbook site.yml --limit web1.example.com\nansible-playbook site.yml --tags nginx"
+    },
+    {
+      "id": "ansible-6",
+      "question": "Как устроена структура роли?",
+      "answer": "Роль — каталог с предсказуемыми папками: tasks (что делать), templates и files (что раскладывать), defaults и vars (переменные), handlers (реакции на изменения), meta (зависимости). Такая структура позволяет переиспользовать роль в разных проектах без правок.",
+      "example": "roles/nginx/\n  tasks/main.yml\n  templates/nginx.conf.j2\n  defaults/main.yml     # значения по умолчанию, их можно переопределить\n  handlers/main.yml\n  meta/main.yml"
+    },
+    {
+      "id": "ansible-7",
+      "question": "Как работает приоритет переменных?",
+      "answer": "От слабых к сильным: defaults роли → group_vars → host_vars → vars плейбука → extra-vars из командной строки (-e), которые побеждают всё. Знание этого порядка спасает от вопроса «почему моё значение не применилось».",
+      "example": "roles/app/defaults/main.yml: app_port: 8000\ngroup_vars/prod.yml:         app_port: 80\nansible-playbook -e app_port=9000   # победит это"
+    },
+    {
+      "id": "ansible-8",
+      "question": "Что такое facts и как их использовать?",
+      "answer": "Facts — автоматически собранные данные о хосте: ОС, версия, число ядер, память, IP-адреса. По ним пишут условия и вычисляют параметры, например число воркеров по количеству CPU. Сбор фактов можно отключить для скорости, если они не нужны.",
+      "example": "- debug: var=ansible_facts['distribution']\n\n- set_fact:\n    workers: \"{{ ansible_processor_vcpus * 2 }}\"\n\n- hosts: web\n  gather_facts: false   # быстрее, если facts не нужны"
+    },
+    {
+      "id": "ansible-9",
+      "question": "Как генерировать конфиги шаблонами Jinja2?",
+      "answer": "Модуль template подставляет переменные в файл при копировании. Так один шаблон обслуживает все окружения, а различия живут в переменных. Обязательно уведомляйте handler о перезагрузке сервиса и валидируйте конфиг перед применением.",
+      "example": "# templates/nginx.conf.j2\nworker_processes {{ nginx_workers }};\nserver_name {{ site_domain }};\n\n- template:\n    src: nginx.conf.j2\n    dest: /etc/nginx/nginx.conf\n    validate: 'nginx -t -c %s'\n  notify: reload nginx"
+    },
+    {
+      "id": "ansible-10",
+      "question": "Как делать обновление без простоя через serial?",
+      "answer": "Параметр serial ограничивает, сколько хостов обновляется одновременно, а max_fail_percentage прерывает раскатку при ошибках. В сочетании с выводом хоста из балансировки перед обновлением это даёт полноценный rolling-деплой на обычных виртуалках.",
+      "example": "- hosts: web\n  serial: 2\n  max_fail_percentage: 25\n  tasks:\n    - name: вывести из балансировки\n      command: /usr/local/bin/lb-drain {{ inventory_hostname }}\n    - include_role: { name: app_deploy }\n    - command: /usr/local/bin/lb-enable {{ inventory_hostname }}"
+    },
+    {
+      "id": "ansible-11",
+      "question": "Почему command и shell ломают идемпотентность?",
+      "answer": "Эти модули просто выполняют команду и всегда сообщают об изменении. Их используют, когда нет подходящего модуля, но добавляют защиту: creates/removes, when или changed_when, чтобы повторный запуск ничего не делал и отчёт был честным.",
+      "example": "- command: /opt/app/bin/setup.sh\n  args: { creates: /opt/app/.setup-done }\n\n- shell: my-tool --status\n  register: st\n  changed_when: false"
+    },
+    {
+      "id": "ansible-12",
+      "question": "Как отлаживать плейбук?",
+      "answer": "Флаг -v..-vvvv увеличивает подробность, --start-at-task продолжает с нужной задачи, --step спрашивает подтверждение на каждом шаге, модуль debug печатает переменные, register сохраняет результат задачи для анализа. Так поиск причины занимает минуты, а не перезапуски вслепую.",
+      "example": "ansible-playbook site.yml -vv --start-at-task 'configure nginx'\n\n- command: nginx -t\n  register: out\n- debug: var=out.stderr_lines"
+    },
+    {
+      "id": "ansible-13",
+      "question": "Что такое ansible-lint и molecule?",
+      "answer": "ansible-lint проверяет плейбуки на ошибки и плохие практики, molecule запускает роль в одноразовом контейнере и проверяет результат — по сути юнит-тесты для инфраструктурного кода. Оба легко встраиваются в пайплайн.",
+      "example": "ansible-lint playbooks/\nmolecule test    # create -> converge -> idempotence -> verify -> destroy"
+    },
+    {
+      "id": "ansible-14",
+      "question": "Где Ansible уместен, а где нет?",
+      "answer": "Он хорош для настройки серверов, установки агентов, разовых операционных задач и деплоя на виртуалки. Он плохо подходит как замена оркестратору контейнеров и как источник состояния инфраструктуры — там сильнее Terraform и Kubernetes.",
+      "example": "уместно: обновить пакеты на 50 машинах, разложить конфиги, ротация ключей\nне уместно: держать желаемое число реплик приложения (это делает k8s)"
+    },
+    {
+      "id": "ansible-15",
+      "question": "Как безопасно давать Ansible доступ к серверам?",
+      "answer": "Отдельный технический пользователь с ключом, повышение прав через become только для нужных задач, ключ управления в защищённом месте (в CI — секрет, локально — с парольной фразой). Не стоит ходить root'ом по паролю: это лишает вас аудита.",
+      "example": "ansible_user: ansible\nansible_become: true\nansible_become_method: sudo\n# /etc/sudoers.d/ansible: ansible ALL=(ALL) NOPASSWD: ALL (на управляемых хостах)"
+    }
+  ]
+}

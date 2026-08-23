@@ -1,0 +1,93 @@
+{
+  "id": "helm",
+  "title": "Helm и GitOps-доставка",
+  "order": 11,
+  "color": "#7DA9F2",
+  "lesson": "Как только у вас больше одного окружения, чистые YAML-манифесты начинают копироваться: та же конфигурация с другим числом реплик, другим доменом, другими лимитами. Копипаста расходится, и стенды перестают быть похожими. Эту проблему решают шаблонизаторы.\n\nHelm — самый распространённый вариант: чарт содержит шаблоны манифестов и файл значений values.yaml. Для stage и prod вы держите разные файлы значений и один и тот же чарт. Helm ещё и ведёт историю релизов, поэтому умеет откатываться на предыдущую версию одной командой.\n\nАльтернатива — Kustomize: он не шаблонизирует, а наслаивает патчи на базовые манифесты. Это проще читать (нет логики в шаблонах), но менее гибко для чужих приложений. На практике часто используют оба: Kustomize для своих сервисов, Helm — для установки готовых компонентов вроде ingress-контроллера или Prometheus.\n\nВторая половина темы — GitOps. Вместо того чтобы пайплайн «пушил» изменения в кластер, в кластере живёт агент (Argo CD или Flux), который «тянет» желаемое состояние из репозитория и приводит кластер к нему. Права на прод есть только у агента, а любое изменение проходит через pull request.\n\nЭто даёт три вещи. Во-первых, состояние кластера всегда описано в git, и восстановление после аварии — это применение репозитория к новому кластеру. Во-вторых, дрейф виден: агент показывает, что реальность отличается от описания. В-третьих, откат — это git revert, а не ручные команды в панике.\n\nВажный практический нюанс — где хранить версии образов. Обычно CI после сборки обновляет тег в репозитории конфигурации отдельным коммитом, и именно этот коммит запускает деплой. Так история релизов совпадает с историей git, и всегда понятно, что и когда попало в прод.",
+  "cards": [
+    {
+      "id": "helm-1",
+      "question": "Что такое Helm-чарт?",
+      "answer": "Пакет с шаблонами манифестов Kubernetes, значениями по умолчанию и метаданными. Устанавливается как релиз с именем, поэтому один чарт можно поставить несколько раз с разными значениями. Основные файлы: Chart.yaml, values.yaml и каталог templates.",
+      "example": "chart/\n  Chart.yaml\n  values.yaml\n  templates/deployment.yaml\n  templates/service.yaml\n\nhelm install api ./chart -f values.prod.yaml"
+    },
+    {
+      "id": "helm-2",
+      "question": "Как разделяют значения для окружений?",
+      "answer": "Один чарт, несколько файлов значений: values.yaml с общими настройками и values.stage/prod.yaml с различиями. Так поведение окружений отличается только данными, а шаблон остаётся единственным источником структуры.",
+      "example": "# values.prod.yaml\nreplicaCount: 6\nimage: { tag: '1.4.2' }\nresources: { limits: { memory: 1Gi } }\n\nhelm upgrade --install api ./chart -f values.prod.yaml -n prod"
+    },
+    {
+      "id": "helm-3",
+      "question": "Как безопасно обновлять релиз и откатываться?",
+      "answer": "helm upgrade --install идемпотентен: создаст релиз или обновит его. Флаг --atomic откатывает изменения при неудаче, --wait ждёт готовности подов. История релизов позволяет вернуться на предыдущую ревизию.",
+      "example": "helm upgrade --install api ./chart -f values.prod.yaml \\\n  --atomic --timeout 5m\nhelm history api\nhelm rollback api 7"
+    },
+    {
+      "id": "helm-4",
+      "question": "Как проверить, что сгенерирует Helm, до применения?",
+      "answer": "helm template рендерит манифесты локально, helm diff показывает разницу с текущим состоянием, helm lint проверяет чарт. Это обязательный шаг в пайплайне: увидеть итоговый YAML перед изменением прода.",
+      "example": "helm lint ./chart\nhelm template api ./chart -f values.prod.yaml | kubeconform -\nhelm diff upgrade api ./chart -f values.prod.yaml"
+    },
+    {
+      "id": "helm-5",
+      "question": "Чем Kustomize отличается от Helm?",
+      "answer": "Kustomize накладывает патчи на базовые манифесты без языка шаблонов: есть base и overlays для окружений. Читать проще и нет логики в YAML, но для сложной параметризации чужих приложений Helm гибче. Часто применяют оба инструмента вместе.",
+      "example": "base/deployment.yaml\noverlays/prod/kustomization.yaml:\n  resources: [../../base]\n  patches: [{ path: replicas.yaml }]\n\nkubectl apply -k overlays/prod"
+    },
+    {
+      "id": "helm-6",
+      "question": "Как работает GitOps-агент вроде Argo CD?",
+      "answer": "Агент внутри кластера следит за репозиторием и постоянно приводит кластер к описанному состоянию. Он показывает статус синхронизации, различия и умеет автоматически исправлять дрейф. Пайплайну больше не нужны учётные данные кластера.",
+      "example": "kind: Application\nspec:\n  source: { repoURL: git@github.com:org/infra.git, path: apps/api, targetRevision: main }\n  destination: { server: https://kubernetes.default.svc, namespace: prod }\n  syncPolicy: { automated: { prune: true, selfHeal: true } }"
+    },
+    {
+      "id": "helm-7",
+      "question": "Почему GitOps безопаснее push-деплоя из CI?",
+      "answer": "В push-модели у пайплайна есть админский доступ к продовому кластеру, и утечка токена CI означает захват прода. В pull-модели кластер сам ходит в git, наружу ничего не открыто, а изменения проходят ревью. Плюс полная история и откат через revert.",
+      "example": "push:  CI --kubeconfig prod--> cluster   (секрет в CI = риск)\npull:  CI -> git commit -> agent in cluster -> apply"
+    },
+    {
+      "id": "helm-8",
+      "question": "Как в GitOps обновляется версия образа?",
+      "answer": "CI собирает образ и делает коммит в репозиторий конфигурации, меняя тег. Этот коммит и есть деплой. Некоторые агенты умеют сами следить за реестром и создавать такие коммиты автоматически по политике версий.",
+      "example": "# CI шаг\nyq -i '.image.tag = \"1.4.3\"' apps/api/values.prod.yaml\ngit commit -am 'deploy api 1.4.3' && git push\n# агент увидит коммит и синхронизирует кластер"
+    },
+    {
+      "id": "helm-9",
+      "question": "Как хранить секреты при GitOps?",
+      "answer": "В git кладут только зашифрованные секреты: SealedSecrets шифрует их публичным ключом кластера, SOPS — ключом KMS. Расшифровать может только кластер. Альтернатива — External Secrets, который тянет значения из внешнего хранилища по ссылке.",
+      "example": "kubeseal < secret.yaml > sealed-secret.yaml   # безопасно коммитить\n\nkind: ExternalSecret\nspec:\n  secretStoreRef: { name: vault }\n  data: [{ secretKey: DB_PASSWORD, remoteRef: { key: prod/db, property: password } }]"
+    },
+    {
+      "id": "helm-10",
+      "question": "Как организуют репозитории для GitOps?",
+      "answer": "Обычно разделяют код приложения и репозиторий конфигурации кластера: у них разные жизненные циклы и разные права. Внутри конфигурационного репозитория структура по окружениям и приложениям, чтобы права на prod можно было ограничить отдельно.",
+      "example": "app-repo:    исходники + Dockerfile + CI сборки\ninfra-repo:  clusters/prod/apps/api/values.yaml\n             clusters/stage/apps/api/values.yaml"
+    },
+    {
+      "id": "helm-11",
+      "question": "Что такое progressive delivery в Kubernetes?",
+      "answer": "Автоматизированный canary или blue-green с анализом метрик: контроллер (Argo Rollouts, Flagger) постепенно переключает трафик и сам откатывает выкладку, если ошибок стало больше порога. Это снимает с человека ручное наблюдение за релизом.",
+      "example": "strategy:\n  canary:\n    steps:\n      - setWeight: 10\n      - pause: { duration: 5m }\n      - analysis: { templates: [{ templateName: error-rate }] }\n      - setWeight: 50"
+    },
+    {
+      "id": "helm-12",
+      "question": "Что такое Operator и CRD?",
+      "answer": "CRD добавляет в кластер собственный тип объекта, а оператор — контроллер, который умеет им управлять: разворачивать базу, делать бэкапы, обновлять версии. По сути это упаковка эксплуатационных знаний в код, работающий внутри кластера.",
+      "example": "kind: PostgresCluster        # CRD от оператора\nspec:\n  instances: 3\n  backups: { schedule: '0 2 * * *' }\n# оператор сам создаёт StatefulSet, сервисы, cronjob бэкапа"
+    },
+    {
+      "id": "helm-13",
+      "question": "Как валидировать манифесты в пайплайне?",
+      "answer": "kubeconform или kubectl --dry-run=server проверяют схему, conftest/OPA — политики (запрет latest, обязательные лимиты, запрет privileged). Такие проверки на PR не дают попасть в кластер конфигурации, нарушающей стандарты команды.",
+      "example": "helm template ./chart | kubeconform -strict -\nconftest test manifests/ --policy policies/\n# правило: контейнер обязан иметь resources.limits"
+    },
+    {
+      "id": "helm-14",
+      "question": "Как восстановить кластер после полной потери?",
+      "answer": "В GitOps-подходе: поднять новый кластер (IaC), установить агента, указать репозиторий — дальше он развернёт все приложения сам. Отдельно восстанавливаются только данные: тома и базы из бэкапов, поэтому именно бэкапы данных остаются главным риском.",
+      "example": "terraform apply        # новый кластер\nargocd app sync -l all # приложения из git\nvelero restore create --from-backup daily-2026-08-22   # данные"
+    }
+  ]
+}

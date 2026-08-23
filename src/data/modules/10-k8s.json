@@ -1,0 +1,129 @@
+{
+  "id": "k8s",
+  "title": "Kubernetes",
+  "order": 10,
+  "color": "#4FD1A5",
+  "lesson": "Когда контейнеров два-три, хватает docker compose. Когда их сотни на десятках машин, нужен кто-то, кто решает, где что запустить, поднимает упавшее, обновляет без простоя и распределяет трафик. Это и есть Kubernetes.\n\nВы не говорите кластеру «запусти контейнер на сервере №7». Вы описываете желаемое состояние в YAML-манифесте: «должно быть три копии этого образа, вот их конфиг, вот адрес». Контроллеры кластера постоянно сравнивают реальность с описанием и устраняют разницу. Упала нода — поды переедут; удалили под руками — появится новый.\n\nАрхитектурно кластер делится на control plane и рабочие ноды. В control plane живут API-сервер (единственная точка входа), etcd (база желаемого состояния), scheduler (куда поставить под) и контроллеры. На каждой ноде работает kubelet, который запускает контейнеры, и kube-proxy, который обеспечивает сетевую маршрутизацию сервисов.\n\nМинимальный словарь объектов: под — единица запуска, Deployment — держит нужное число подов и умеет плавно обновлять, Service — стабильный внутренний адрес, Ingress — вход снаружи по домену, ConfigMap и Secret — конфиги и пароли, PVC — постоянный диск. Для фоновых задач есть Job и CronJob, для агентов на каждой ноде — DaemonSet, для баз — StatefulSet.\n\nОсобое внимание — ресурсам и проверкам. requests влияют на планирование, limits ограничивают потребление; при превышении памяти под убивается по OOM, а при упоре в CPU просто тормозит. Liveness-проба перезапускает зависший контейнер, readiness убирает его из балансировки, пока он не готов, startup даёт медленным приложениям время на старт.\n\nKubernetes мощный, но дорогой в обслуживании: сеть, права RBAC, обновления версий, мониторинг самого кластера. Если у вас три сервиса и один сервер, начните с compose — переезд в кластер будет несложным, когда он действительно понадобится.",
+  "cards": [
+    {
+      "id": "k8s-1",
+      "question": "Зачем нужен Kubernetes, если есть Docker?",
+      "answer": "Docker запускает контейнеры на одной машине. {{term:Kubernetes}} — {{term:оркестратор}}: планирует контейнеры по нодам, перезапускает упавшие, обновляет без простоя, масштабирует по нагрузке и даёт сервисам сетевые адреса. Это про эксплуатацию сотен контейнеров, а не про сборку.",
+      "example": "docker run -d myapp                  # одна машина, ручной присмотр\nkubectl scale deploy/api --replicas=5  # кластер сам разложит поды"
+    },
+    {
+      "id": "k8s-2",
+      "question": "Что такое под и чем он отличается от контейнера?",
+      "answer": "{{term:под}} — минимальная единица запуска: один или несколько контейнеров с общим IP, сетью и томами. Поды эфемерны: их не чинят, а пересоздают. Поэтому напрямую поды почти не создают — ими управляет {{term:Deployment}}.",
+      "example": "kubectl get pods -o wide\nkubectl describe pod api-7d9f-abc12   # события: почему не стартует\nkubectl logs api-7d9f-abc12 -f"
+    },
+    {
+      "id": "k8s-3",
+      "question": "Как выглядит манифест Deployment?",
+      "answer": "{{term:манифест}} описывает желаемое состояние: сколько реплик, какой образ, какие ресурсы и проверки готовности. Контроллер держит это состояние сам и при смене образа обновляет поды порциями, не роняя сервис.",
+      "example": "apiVersion: apps/v1\nkind: Deployment\nmetadata: { name: api }\nspec:\n  replicas: 3\n  selector: { matchLabels: { app: api } }\n  template:\n    metadata: { labels: { app: api } }\n    spec:\n      containers:\n        - name: api\n          image: ghcr.io/org/api:1.4.2\n          resources:\n            requests: { cpu: 100m, memory: 128Mi }\n            limits:   { cpu: 500m, memory: 512Mi }"
+    },
+    {
+      "id": "k8s-4",
+      "question": "Как трафик попадает в приложение внутри кластера?",
+      "answer": "{{term:Service}} даёт стабильное имя и IP для набора подов и балансирует между ними. {{term:Ingress}} — правило входа снаружи: домен и путь ведут на конкретный Service, там же обычно живёт TLS-сертификат.",
+      "example": "kind: Service\nspec:\n  selector: { app: api }\n  ports: [{ port: 80, targetPort: 8000 }]\n---\nkind: Ingress\nspec:\n  rules:\n    - host: api.example.com\n      http: { paths: [{ path: /, pathType: Prefix, backend: { service: { name: api, port: { number: 80 } } } }] }"
+    },
+    {
+      "id": "k8s-5",
+      "question": "Чем ConfigMap отличается от Secret?",
+      "answer": "{{term:ConfigMap}} — обычные настройки (уровень логов, адреса сервисов). {{term:Secret}} — пароли, токены, ключи; они хранятся отдельно, base64 — это не шифрование, поэтому включают шифрование в etcd и ограничивают доступ ролями.",
+      "example": "envFrom:\n  - configMapRef: { name: api-config }\n  - secretRef:    { name: api-secrets }\n\nkubectl create secret generic api-secrets --from-literal=DB_PASSWORD='...'"
+    },
+    {
+      "id": "k8s-6",
+      "question": "Что делать, если под в CrashLoopBackOff?",
+      "answer": "Значит контейнер стартует и сразу падает. Порядок: посмотреть события через describe, затем логи текущего и предыдущего запуска, проверить переменные и секреты, лимиты памяти (OOMKilled) и корректность probes. Часто причина банальна: опечатка в конфиге или недоступная база.",
+      "example": "kubectl describe pod api-xxx | tail -20\nkubectl logs api-xxx --previous\nkubectl get events --sort-by=.lastTimestamp | tail\n# OOMKilled -> поднять limits.memory или починить утечку"
+    },
+    {
+      "id": "k8s-7",
+      "question": "Из чего состоит кластер: control plane и ноды",
+      "answer": "Control plane принимает решения: API-сервер (вход для всех), etcd (хранит желаемое состояние), scheduler (выбирает ноду), controller-manager (следит за соответствием). На каждой {{term:нода}} работает kubelet (запускает контейнеры) и kube-proxy (сетевые правила сервисов).",
+      "example": "kubectl get nodes\nkubectl get componentstatuses\nkubectl -n kube-system get pods   # etcd, apiserver, scheduler, coredns"
+    },
+    {
+      "id": "k8s-8",
+      "question": "Как работают requests и limits?",
+      "answer": "requests — гарантированный минимум, по нему scheduler выбирает ноду. limits — жёсткий потолок: превышение памяти убивает контейнер (OOMKilled), превышение CPU просто замедляет его (throttling). Без requests планировщик работает вслепую и ноды перегружаются.",
+      "example": "resources:\n  requests: { cpu: 200m, memory: 256Mi }\n  limits:   { cpu: '1', memory: 512Mi }\n\nkubectl top pods    # реальное потребление"
+    },
+    {
+      "id": "k8s-9",
+      "question": "Чем отличаются liveness, readiness и startup probes?",
+      "answer": "Liveness перезапускает зависший контейнер. Readiness решает, можно ли пускать трафик: пока проба не проходит, под убирают из Service. Startup даёт медленному приложению время на инициализацию, не давая liveness убить его на старте.",
+      "example": "readinessProbe:\n  httpGet: { path: /ready, port: 8000 }\n  periodSeconds: 5\nlivenessProbe:\n  httpGet: { path: /health, port: 8000 }\n  failureThreshold: 3\nstartupProbe:\n  httpGet: { path: /health, port: 8000 }\n  failureThreshold: 30"
+    },
+    {
+      "id": "k8s-10",
+      "question": "Как обновлять и откатывать Deployment?",
+      "answer": "Rolling update заменяет поды порциями по maxSurge/maxUnavailable, отслеживая готовность новых. rollout status показывает прогресс, rollout undo возвращает предыдущую ревизию. Именно поэтому образы должны иметь неизменяемые теги: иначе непонятно, к чему откатываться.",
+      "example": "kubectl set image deploy/api api=ghcr.io/org/api:1.4.3\nkubectl rollout status deploy/api --timeout=120s\nkubectl rollout history deploy/api\nkubectl rollout undo deploy/api"
+    },
+    {
+      "id": "k8s-11",
+      "question": "Что такое StatefulSet и когда он нужен?",
+      "answer": "Для приложений с состоянием: у подов стабильные имена, свой постоянный диск и предсказуемый порядок запуска. Так работают базы данных и кластеры вроде Kafka. Для обычных stateless-сервисов он не нужен и только усложняет жизнь.",
+      "example": "kind: StatefulSet\nspec:\n  serviceName: pg\n  replicas: 3\n  volumeClaimTemplates:\n    - metadata: { name: data }\n      spec: { resources: { requests: { storage: 50Gi } } }\n# поды: pg-0, pg-1, pg-2 со своими дисками"
+    },
+    {
+      "id": "k8s-12",
+      "question": "Зачем нужны DaemonSet, Job и CronJob?",
+      "answer": "DaemonSet запускает по одному поду на каждой ноде — так работают агенты логов и мониторинга. Job выполняет разовую задачу до успешного завершения (миграция, импорт). CronJob запускает Job по расписанию вместо cron на сервере.",
+      "example": "kind: CronJob\nspec:\n  schedule: '0 3 * * *'\n  concurrencyPolicy: Forbid\n  jobTemplate:\n    spec: { template: { spec: { containers: [{ name: backup, image: backup:1.2 }], restartPolicy: OnFailure } } }"
+    },
+    {
+      "id": "k8s-13",
+      "question": "Как в Kubernetes работает постоянное хранилище?",
+      "answer": "Под просит диск через PersistentVolumeClaim, StorageClass динамически создаёт том в облаке. Важны режимы доступа: обычный блочный диск монтируется только к одной ноде (ReadWriteOnce), а общая запись с нескольких нод требует файловой системы вроде NFS.",
+      "example": "kind: PersistentVolumeClaim\nspec:\n  accessModes: [ReadWriteOnce]\n  storageClassName: gp3\n  resources: { requests: { storage: 20Gi } }"
+    },
+    {
+      "id": "k8s-14",
+      "question": "Что такое namespace и зачем квоты?",
+      "answer": "{{term:namespace}} логически делит кластер: команды, окружения, тестовые стенды. Вместе с ResourceQuota и LimitRange он не даёт одной команде съесть все ресурсы кластера и задаёт значения по умолчанию для подов без лимитов.",
+      "example": "kubectl create namespace team-api\n\nkind: ResourceQuota\nspec:\n  hard:\n    requests.cpu: '10'\n    requests.memory: 20Gi\n    pods: '50'"
+    },
+    {
+      "id": "k8s-15",
+      "question": "Как масштабировать приложение автоматически?",
+      "answer": "HorizontalPodAutoscaler меняет число реплик по метрикам (CPU, память, кастомные метрики вроде RPS). Для этого обязательно нужны requests. Отдельно cluster-autoscaler добавляет ноды, когда подам некуда встать.",
+      "example": "kind: HorizontalPodAutoscaler\nspec:\n  scaleTargetRef: { kind: Deployment, name: api }\n  minReplicas: 2\n  maxReplicas: 20\n  metrics:\n    - type: Resource\n      resource: { name: cpu, target: { type: Utilization, averageUtilization: 70 } }"
+    },
+    {
+      "id": "k8s-16",
+      "question": "Как ограничивают сетевой доступ внутри кластера?",
+      "answer": "По умолчанию все поды могут обращаться ко всем. NetworkPolicy включает белые списки: например, к базе разрешено ходить только подам приложения. Это ключевая мера против бокового перемещения атакующего внутри кластера.",
+      "example": "kind: NetworkPolicy\nspec:\n  podSelector: { matchLabels: { app: postgres } }\n  policyTypes: [Ingress]\n  ingress:\n    - from: [{ podSelector: { matchLabels: { app: api } } }]\n      ports: [{ port: 5432 }]"
+    },
+    {
+      "id": "k8s-17",
+      "question": "Что такое RBAC и ServiceAccount?",
+      "answer": "RBAC описывает, кто и что может делать в API кластера: Role/ClusterRole задают права, RoleBinding привязывает их к пользователю или ServiceAccount. Приложения ходят в API от имени ServiceAccount, и по умолчанию ему не нужны почти никакие права.",
+      "example": "kind: Role\nrules:\n  - apiGroups: ['']\n    resources: [configmaps]\n    verbs: [get, list]\n---\nkind: RoleBinding\nsubjects: [{ kind: ServiceAccount, name: api }]\nroleRef: { kind: Role, name: config-reader }"
+    },
+    {
+      "id": "k8s-18",
+      "question": "Почему под в состоянии Pending?",
+      "answer": "Значит его некуда поставить: не хватает CPU или памяти на нодах, не выполняются nodeSelector/affinity, есть taint без соответствующего toleration, или не создаётся PVC. Причина всегда видна в разделе Events у describe.",
+      "example": "kubectl describe pod api-xxx | grep -A5 Events\n# 0/3 nodes are available: insufficient memory\nkubectl describe nodes | grep -A5 Allocated"
+    },
+    {
+      "id": "k8s-19",
+      "question": "Как в Kubernetes работает DNS между сервисами?",
+      "answer": "CoreDNS даёт каждому Service имя вида service.namespace.svc.cluster.local. Внутри одного namespace достаточно короткого имени. Если сервис «не находится», проверяют namespace, селектор Service и наличие endpoints.",
+      "example": "curl http://api:80/health                 # тот же namespace\ncurl http://api.prod.svc.cluster.local    # полное имя\nkubectl get endpoints api                 # пусто = селектор не совпал"
+    },
+    {
+      "id": "k8s-20",
+      "question": "Как безопасно обслуживать ноды и не уронить сервис?",
+      "answer": "Ноду сначала выводят из планирования (cordon), затем аккуратно выселяют поды (drain), обслуживают и возвращают (uncordon). PodDisruptionBudget гарантирует, что при выселении останется минимум живых реплик, а anti-affinity разносит их по разным нодам.",
+      "example": "kubectl cordon node-3\nkubectl drain node-3 --ignore-daemonsets --delete-emptydir-data\n# после обновления\nkubectl uncordon node-3\n\nkind: PodDisruptionBudget\nspec: { minAvailable: 2, selector: { matchLabels: { app: api } } }"
+    }
+  ]
+}
