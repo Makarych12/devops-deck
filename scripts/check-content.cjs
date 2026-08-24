@@ -2,13 +2,19 @@ const fs = require('fs')
 const path = require('path')
 
 const base = path.join(__dirname, '..', 'src', 'data')
-const dir = path.join(base, 'modules')
 
-const mods = fs
-  .readdirSync(dir)
-  .filter((f) => f.endsWith('.json'))
-  .map((f) => JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')))
-  .sort((a, b) => a.order - b.order)
+function loadModules(subdir) {
+  const dir = path.join(base, subdir)
+  return fs
+    .readdirSync(dir)
+    .filter((f) => f.endsWith('.json'))
+    .map((f) => JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')))
+    .sort((a, b) => a.order - b.order)
+}
+
+const devopsMods = loadModules('modules')
+const englishMods = loadModules('english')
+const mods = [...devopsMods, ...englishMods]
 
 const glossary = JSON.parse(fs.readFileSync(path.join(base, 'glossary.json'), 'utf8'))
 const keys = new Set(Object.keys(glossary).map((k) => k.toLowerCase()))
@@ -19,17 +25,20 @@ const fail = (msg) => {
   errors++
 }
 
-console.log(`modules ${mods.length}, cards ${mods.reduce((s, m) => s + m.cards.length, 0)}`)
-for (const m of mods) {
-  console.log(`${String(m.order).padStart(2)} ${m.id.padEnd(10)} ${String(m.cards.length).padStart(3)} карточек`)
+console.log(`DevOps: ${devopsMods.length} модулей, ${devopsMods.reduce((s, m) => s + m.cards.length, 0)} карточек`)
+for (const m of devopsMods) {
+  console.log(`  ${String(m.order).padStart(2)} ${m.id.padEnd(14)} ${String(m.cards.length).padStart(3)} карточек`)
 }
+console.log(`English: ${englishMods.length} модулей, ${englishMods.reduce((s, m) => s + m.cards.length, 0)} карточек`)
+for (const m of englishMods) {
+  console.log(`  ${String(m.order).padStart(2)} ${m.id.padEnd(14)} ${String(m.cards.length).padStart(3)} карточек`)
+}
+console.log(`Total: ${mods.length} модулей, ${mods.reduce((s, m) => s + m.cards.length, 0)} карточек`)
 
-const seen = { id: new Set(), order: new Set(), card: new Set() }
+const seen = { id: new Set(), card: new Set() }
 for (const m of mods) {
   if (seen.id.has(m.id)) fail(`дубликат module id: ${m.id}`)
-  if (seen.order.has(m.order)) fail(`дубликат order: ${m.order}`)
   seen.id.add(m.id)
-  seen.order.add(m.order)
   if (!m.title || !m.lesson || !/^#[0-9A-Fa-f]{6}$/.test(m.color)) fail(`некорректные поля модуля ${m.id}`)
 
   for (const c of m.cards) {

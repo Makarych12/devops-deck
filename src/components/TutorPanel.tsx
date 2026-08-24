@@ -1,16 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
-import { askTutor, type ChatMessage } from '../lib/anthropic'
+import { askTutor, type ChatMessage, type Provider } from '../lib/ai'
+import type { Settings } from '../lib/db'
 import type { Card, Module } from '../types'
 
 type TutorPanelProps = {
   online: boolean
   checking: boolean
-  apiKey: string
-  model: string
+  settings: Settings
   card: Card | null
   module: Module | null
   onRecheck: () => void
   onOpenSettings: () => void
+  onSwitchProvider: (provider: Provider) => void
 }
 
 const SUGGESTIONS = [
@@ -22,12 +23,12 @@ const SUGGESTIONS = [
 export function TutorPanel({
   online,
   checking,
-  apiKey,
-  model,
+  settings,
   card,
   module,
   onRecheck,
-  onOpenSettings
+  onOpenSettings,
+  onSwitchProvider
 }: TutorPanelProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [input, setInput] = useState('')
@@ -36,6 +37,9 @@ export function TutorPanel({
   const scrollRef = useRef<HTMLDivElement>(null)
   const abortRef = useRef<AbortController | null>(null)
 
+  const { provider } = settings
+  const apiKey = provider === 'gemini' ? settings.geminiApiKey : settings.openrouterApiKey
+  const model = provider === 'gemini' ? settings.geminiModel : settings.openrouterModel
   const available = online && Boolean(apiKey)
 
   useEffect(() => {
@@ -67,6 +71,7 @@ export function TutorPanel({
 
     try {
       const reply = await askTutor({
+        provider,
         apiKey,
         model,
         history,
@@ -99,21 +104,43 @@ export function TutorPanel({
         <div className="min-w-0">
           <h2 className="truncate text-sm font-medium text-slate-100">ИИ-наставник</h2>
           <p className="truncate font-mono text-[11px] text-slate-500">
-            {available ? model : online ? 'нужен API-ключ' : 'офлайн-режим'}
+            {available ? `${provider} · ${model}` : online ? 'нужен API-ключ' : 'офлайн-режим'}
           </p>
         </div>
-        <span
-          className={`ml-auto h-2 w-2 shrink-0 rounded-full ${
-            checking ? 'bg-amber' : online ? 'bg-teal' : 'bg-red'
-          }`}
-          title={checking ? 'проверка сети' : online ? 'сеть есть' : 'сети нет'}
-        />
+        <div className="ml-auto flex items-center gap-2">
+          {available && (
+            <div className="flex rounded-lg border border-border bg-black/30 p-0.5" data-no-flip>
+              {(['gemini', 'openrouter'] as Provider[]).map((p) => (
+                <button
+                  key={p}
+                  type="button"
+                  data-no-flip
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    onSwitchProvider(p)
+                  }}
+                  className={`rounded px-2 py-0.5 font-mono text-[10px] transition-colors ${
+                    provider === p ? 'bg-agent/20 text-agent' : 'text-slate-500 hover:text-slate-300'
+                  }`}
+                >
+                  {p === 'gemini' ? 'Gemini' : 'OpenRouter'}
+                </button>
+              ))}
+            </div>
+          )}
+          <span
+            className={`h-2 w-2 shrink-0 rounded-full ${
+              checking ? 'bg-amber' : online ? 'bg-teal' : 'bg-red'
+            }`}
+            title={checking ? 'проверка сети' : online ? 'сеть есть' : 'сети нет'}
+          />
+        </div>
       </header>
 
       {!online ? (
         <OfflineBanner checking={checking} onRecheck={onRecheck} />
       ) : !apiKey ? (
-        <NoKeyBanner onOpenSettings={onOpenSettings} />
+        <NoKeyBanner provider={provider} onOpenSettings={onOpenSettings} />
       ) : (
         <>
           <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
@@ -214,14 +241,18 @@ function OfflineBanner({ checking, onRecheck }: { checking: boolean; onRecheck: 
   )
 }
 
-function NoKeyBanner({ onOpenSettings }: { onOpenSettings: () => void }) {
+function NoKeyBanner({ provider, onOpenSettings }: { provider: Provider; onOpenSettings: () => void }) {
+  const label = provider === 'gemini' ? 'Google Gemini' : 'OpenRouter'
+  const hint = provider === 'gemini'
+    ? 'Получите бесплатный ключ в Google AI Studio (aistudio.google.com).'
+    : 'Получите ключ на openrouter.ai — работает с множеством моделей.'
   return (
     <div className="flex flex-1 flex-col justify-center gap-3 p-5">
       <div className="panel border-agent/40 bg-agent/5 p-4">
         <p className="font-mono text-[11px] uppercase tracking-wide text-agent">нужен API-ключ</p>
         <p className="mt-2 text-[13px] leading-relaxed text-slate-300">
-          Сеть есть, но ИИ-наставнику нужен ваш ключ Anthropic. Он хранится только в этом браузере
-          (IndexedDB) и отправляется напрямую в api.anthropic.com.
+          Сеть есть, но ИИ-наставнику нужен ключ {label}. {hint} Ключ хранится только в этом
+          браузере (IndexedDB).
         </p>
         <button type="button" className="btn mt-3 w-full border-agent/50 text-agent" onClick={onOpenSettings}>
           Добавить ключ

@@ -1,0 +1,69 @@
+{
+  "id": "en-meetings",
+  "title": "Meetings и созвоны",
+  "order": 4,
+  "color": "#F59E0B",
+  "lesson": "Созвоны — самая сложная часть работы на английском: говорят быстро, перебивают, шутят, термины летят. Но созвоны подчиняются шаблонам, и эти шаблоны можно выучить заранее.\n\nНачало созвона: small talk (1-2 минуты), затем переход к делу. «Thanks for joining, let's get started» — стандартный мостик. Если вы ведёте — обозначьте повестку: «we're here to discuss…», «the goal of this meeting is…».\n\nВ середине: активное слушание. «Could you elaborate on that?», «just to make sure I understand…», «can you give an example?» — эти фразы дают время подумать и уточнить. Если не поняли — не молчите: «sorry, I didn't catch that, could you repeat?» лучше, чем кивать и потерять нить.\n\nКонец: summary и action items. «So, to summarize…», «action items: …», «let's follow up on…» — это структура, без которой созвон считается незаконченным.",
+  "cards": [
+    {
+      "id": "en-meetings-1",
+      "question": "Как начать встречу и перейти к делу?",
+      "answer": "Small talk → bridge → agenda. Мостик: «Let's get started» / «Shall we dive in?» / «I think we can kick off». Повестка: «We're here to discuss…» / «The goal today is…».",
+      "example": "Thanks for joining everyone, let's get started.\n# Спасибо, что пришли, давайте начнём.\nShall we dive in? We've got 30 minutes.\n# Можем начинать? У нас 30 минут.\nThe goal today is to review the migration plan.\n# Цель сегодняшней встречи — разобрать план миграции."
+    },
+    {
+      "id": "en-meetings-2",
+      "question": "Как переспросить, если не понял?",
+      "answer": "Вежливые формулы: «Sorry, I didn't catch that» / «Could you repeat that, please?» / «I'm not sure I followed — could you go over that again?». Никогда не кивайте, если не поняли.",
+      "example": "Sorry, I didn't catch the last part — could you repeat?\n# Извини, не уловил последнюю часть — повторишь?\nI'm not sure I followed, could you go over that again?\n# Не уверен, что уловил — можешь пройтись ещё раз?\nCould you slow down a bit? I want to make sure I get this.\n# Можешь чуть медленнее? Хочу точно понять."
+    },
+    {
+      "id": "en-meetings-3",
+      "question": "Как уточнить и показать, что слушаешь?",
+      "answer": "Активное слушание: «Just to make sure I understand…» / «So what you're saying is…» / «Let me play that back…». Это даёт время подумать и подтверждает понимание.",
+      "example": "Just to make sure I understand: we're deploying on Friday?\n# Чтобы убедиться, что я понял: деплоим в пятницу?\nSo what you're saying is we need to roll back?\n# То есть ты говоришь, что нужен откат?\nLet me play that back: the issue is in the load balancer config.\n# Повторю: проблема в конфиге балансировщика."
+    },
+    {
+      "id": "en-meetings-4",
+      "question": "Как вежливо перебить или вмешаться?",
+      "answer": "«Can I jump in here?» / «Sorry to interrupt, but…» / «If I could just add…». Прямое вмешательство без извинения считается грубым.",
+      "example": "Can I jump in here really quick?\n# Можно я тут вклинюсь на секунду?\nSorry to interrupt, but I think there's a blocker.\n# Извини за перебивание, но кажется есть блокер.\nIf I could just add something to that point.\n# Если можно, добавлю к этому моменту."
+    },
+    {
+      "id": "en-meetings-5",
+      "question": "Как предложить идею на созвоне?",
+      "answer": "Мягкие формулировки: «What if we…» / «I was thinking we could…» / «One option might be to…». Прямое «we should» звучит самоуверенно; «what if» приглашает к обсуждению.",
+      "example": "What if we delay the release by one sprint?\n# Что если отложить релиз на один спринт?\nI was thinking we could use a blue-green deployment.\n# Я думал, можно использовать blue-green деплой.\nOne option might be to shard the database.\n# Один вариант — шардировать базу."
+    },
+    {
+      "id": "en-meetings-6",
+      "question": "Как не согласиться, не ссорясь?",
+      "answer": "«I see your point, but…» / «I'm not sure I agree with…» / «That's a valid concern, however…». Прямое «you're wrong» — табу; сначала признают, потом возражают.",
+      "example": "I see your point, but I think the risk is higher than that.\n# Понимаю, но думаю риск выше.\nI'm not sure I agree with going with that approach.\n# Не уверен, что согласен с этим подходом.\nThat's a valid concern, however we've tested it already.\n# Это справедливое замечание, однако мы уже протестировали."
+    },
+    {
+      "id": "en-meetings-7",
+      "question": "Как подвести итоги и зафиксировать action items?",
+      "answer": "«So, to summarize…» / «Let me recap the action items» / «To wrap up…». Каждый action item: кто, что, к какому сроку.",
+      "example": "So to summarize: we're proceeding with the migration.\n# Итог: продолжаем миграцию.\nAction items: Alex updates the runbook by Thursday.\n# Задачи: Алекс обновляет runbook до четверга.\nLet's wrap up — I'll send the notes after the call.\n# Давайте завершим — пришлю заметки после созвона."
+    },
+    {
+      "id": "en-meetings-8",
+      "question": "Что сказать, если нужно уйти раньше?",
+      "answer": "«I have to drop off» / «I need to jump to another call» / «I'll have to leave at…». Всегда обозначьте время заранее, не в последнюю секунду.",
+      "example": "I have to drop off in 5 minutes, sorry.\n# Мне нужно уйти через 5 минут, извините.\nI need to jump to another call at 3.\n# Мне нужно на другой созвон в 3.\nI'll have to leave early today, can we cover my items first?\n# Мне нужно уйти пораньше, можем начать с моих пунктов?"
+    },
+    {
+      "id": "en-meetings-9",
+      "question": "Как попросить слово, если трудно вставить слово?",
+      "answer": "«I'd like to add…» / «Can I share something here?» / «I have a point on this». Если говорят без паузы — поднимите руку или напишите в чат «+1» / «I have a question».",
+      "example": "I'd like to add something on that topic.\n# Хочу добавить к этому вопросу.\nCan I share something here really quick?\n# Можно я быстро поделюсь?\nI have a point on this — it's about the timeout.\n# У меня есть мысль — про таймаут."
+    },
+    {
+      "id": "en-meetings-10",
+      "question": "Фразы для small talk в начале созвона",
+      "answer": "Лёгкие темы: «How's your week going?» / «Any plans for the weekend?» / «How's the weather over there?». 1-2 минуты, затем переход к делу. Не затягивать.",
+      "example": "How's everyone doing today?\n# Как у всех дела сегодня?\nAny exciting plans for the weekend?\n# Какие-нибудь планы на выходные?\nHow's the weather in your city?\n# Как погода у вас в городе?"
+    }
+  ]
+}

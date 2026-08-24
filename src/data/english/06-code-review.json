@@ -1,0 +1,69 @@
+{
+  "id": "en-review",
+  "title": "Code review и техническая критика",
+  "order": 6,
+  "color": "#60A5FA",
+  "lesson": "Code review на английском — это баланс между честностью и вежливостью. Прямая критика («this is wrong», «bad code») воспринимается как атака на личность. Косвенная («have you considered…», «what about…») — как совет.\n\nГлавное правило: критикуешь код, не человека. Не «you made a mistake», а «this line might cause an issue». Не «your approach is bad», а «I wonder if there's a simpler way to do this».\n\nВторое правило: хвалим хорошее. «Nice catch», «clean solution», «I like how you handled this» — это не лесть, а сигнал, что ревьюер внимательно прочитал. Молчание о хорошем читается как «всё плохо».\n\nТретье: различаем nits (мелочи), suggestions (предложения) и blockers (надо исправить). Префиксы «nit:» и «suggestion:» в комментариях экономят время автора — он знает, что можно пропустить.",
+  "cards": [
+    {
+      "id": "en-review-1",
+      "question": "Как указать на проблему, не обидев автора?",
+      "answer": "Косвенные формулировки: «This might cause…» / «I'm wondering if…» / «Have you considered…?». Не «this is wrong», а «this could be an issue».",
+      "example": "This might cause a memory leak under heavy load.\n# Это может вызвать утечку памяти под нагрузкой.\nI'm wondering if we should handle the error case here.\n# Мне интересно, не стоит ли обработать ошибку тут.\nHave you considered using a connection pool?\n# Ты рассматривал использование пула соединений?"
+    },
+    {
+      "id": "en-review-2",
+      "question": "Как предложить альтернативное решение?",
+      "answer": "«What if we…» / «Another approach could be…» / «We could also…». Презентуете вариант, а не навязываете. Автор решает, принимать или нет.",
+      "example": "What if we extract this into a helper function?\n# Что если вынести это в хелпер-функцию?\nAnother approach could be to use a retry loop.\n# Другой подход — использовать цикл с retry.\nWe could also cache the result to avoid repeated calls.\n# Можно также кешировать результат, чтобы не вызывать повторно."
+    },
+    {
+      "id": "en-review-3",
+      "question": "Как отметить мелкие замечания (nits)?",
+      "answer": "Префикс «nit:» — сигнал, что замечание косметическое. «nit: extra space» / «nit: naming». Автор может проигнорировать или исправить быстро.",
+      "example": "nit: extra blank line here\n# нит: лишняя пустая строка тут\nnit: maybe rename to `fetchUserData`?\n# нит: может переименовать в `fetchUserData`?\nnit: trailing whitespace\n# нит: trailing whitespace"
+    },
+    {
+      "id": "en-review-4",
+      "question": "Как похвалить хороший код в ревью?",
+      "answer": "Коротко и конкретно: «Nice catch» / «Clean solution» / «I like how you handled this» / «Great naming». Это не лесть, а сигнал, что ревьюер прочитал внимательно.",
+      "example": "Nice catch on the edge case!\n# Хорошо, что заметил edge case!\nClean solution, much better than what I had in mind.\n# Чистое решение, намного лучше, чем я думал.\nI like how you handled the retry logic here.\n# Мне нравится, как ты обработал логику retry."
+    },
+    {
+      "id": "en-review-5",
+      "question": "Как обозначить blocking comment?",
+      "answer": "«Blocking: …» или «This needs to be fixed before merge». Прямо, но без грубости. Объяснить почему — не «потому что так надо», а конкретный риск.",
+      "example": "Blocking: this will break the production build.\n# Блокер: это сломает прод-сборку.\nThis needs to be fixed before merge — it's a security issue.\n# Нужно исправить до мерджа — это проблема безопасности.\nI can't approve this until the SQL injection is addressed.\n# Не могу апрувнуть, пока не исправлена SQL-инъекция."
+    },
+    {
+      "id": "en-review-6",
+      "question": "Как задать вопрос по чужому коду?",
+      "answer": "«Why did you choose…?» / «What's the reason for…?» / «Could you explain…?». Искренний вопрос, не риторический. Показывает интерес, а не критику.",
+      "example": "Why did you choose Redis over Memcached here?\n# Почему ты выбрал Redis вместо Memcached?\nWhat's the reason for the 30-second timeout?\n# В чём причина 30-секундного таймаута?\nCould you explain how this block handles retries?\n# Можешь объяснить, как этот блок обрабатывает retry?"
+    },
+    {
+      "id": "en-review-7",
+      "question": "Как ответить на комментарий в ревью?",
+      "answer": "Если согласны: «Good point, I'll fix that» / «You're right, updated». Если нет: «I considered that, but…» / «That's a fair point, however…». Всегда с аргументом.",
+      "example": "Good point, I'll extract that into a function.\n# Хорошее замечание, вынесу в функцию.\nI considered that, but the overhead is too high.\n# Я рассматривал это, но оверхед слишком большой.\nThat's a fair point, however the current approach is simpler.\n# Справедливое замечание, но текущий подход проще."
+    },
+    {
+      "id": "en-review-8",
+      "question": "Как попросить ревью своего PR?",
+      "answer": "Контекст + ссылка + ожидание. «Could you review PR #N?» / «Looking for feedback on…» / «This is ready for review». Указать, если срочно.",
+      "example": "Could you review PR #87? It's the DB migration.\n# Можешь ревьюнуть PR #87? Это миграция БД.\nLooking for feedback on the new caching layer.\n# Ищу фидбек по новому слою кеширования.\nThis is ready for review — no rush, but I'd like to merge by Friday.\n# Готово к ревью — не срочно, но хочу мердж к пятнице."
+    },
+    {
+      "id": "en-review-9",
+      "question": "Как дать approve / LGTM?",
+      "answer": "«LGTM» (Looks Good To Me) / «Approved» / «Ship it». Можно с коротким комментарием: «LGTM, nice work!» / «Approved, just a couple of nits above».",
+      "example": "LGTM 🚀\n# Выглядит хорошо 🚀\nApproved, just the nits above if you want to fix them.\n# Аппрув, только ниты выше, если хочешь поправить.\nShip it! Clean implementation.\n# Мерджай! Чистая реализация."
+    },
+    {
+      "id": "en-review-10",
+      "question": "Что значит suggestion: в комментариях?",
+      "answer": "«suggestion:» — мягкое предложение, не обязательное. Отличается от «nit:» (косметика) и «blocking:» (надо исправить). Автор может принять или отклонить.",
+      "example": "suggestion: we could use a map instead of a switch here\n# предложение: можно использовать map вместо switch тут\nsuggestion: add a unit test for the error path\n# предложение: добавить юнит-тест для ошибки\nsuggestion: consider extracting the validation logic\n# предложение: подумай над выносом логики валидации"
+    }
+  ]
+}

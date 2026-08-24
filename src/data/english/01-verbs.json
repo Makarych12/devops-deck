@@ -1,0 +1,117 @@
+{
+  "id": "en-verbs",
+  "title": "Глаголы и фразовые глаголы работы",
+  "order": 1,
+  "color": "#4FD1A5",
+  "lesson": "Фразовые глаголы — главная причина, почему технический текст вы читаете нормально, а живую речь коллег понимаете через силу. В переписке пишут «investigate», а на созвоне скажут «look into». В документации «start a container», в чате «spin up a container».\n\nОсобенность фразового глагола в том, что его смысл не выводится из частей: look into значит «разбираться», look after — «присматривать», look up — «искать в справочнике». Поэтому их учат целиком, как отдельные слова, и обязательно с примером — иначе в голове остаётся набор предлогов без значения.\n\nВторая тонкость — разделяемость. Многие фразовые глаголы допускают объект внутри: spin it up, roll it out, back it up. С местоимением объект почти всегда ставится в середину: правильно «spin it up», а «spin up it» звучит сломанно. Это мелочь, но именно она делает речь естественной.\n\nТретье — регистр. Фразовые глаголы разговорнее латинских синонимов. В чате и на созвоне лучше work around, figure out, sort out; в постмортеме и документации — mitigate, determine, resolve. Владеть двумя регистрами полезнее, чем идеально знать один: вы подстраиваетесь под контекст, и это ощущается как хороший язык.\n\nНаконец, обратите внимание на глаголы, которые в IT получили специальное значение: ship (выпустить), own (отвечать за компонент), block (мешать выполнению задачи), bump (поднять версию), cut (нарезать релиз или ветку). Они звучат странно при буквальном переводе, но встречаются каждый день.",
+  "cards": [
+    {
+      "id": "en-verbs-1",
+      "question": "look into / dig into",
+      "answer": "Разбираться в проблеме, копать. Самый частый ответ на сообщение об инциденте. Формальный синоним — investigate; dig into значит копать глубже и дольше.",
+      "example": "I'll look into it after the standup.\n# Я разберусь с этим после стендапа.\nCan you dig into the slow queries?\n# Можешь покопать медленные запросы?\nWe looked into it and found a memory leak.\n# Мы разобрались и нашли утечку памяти."
+    },
+    {
+      "id": "en-verbs-2",
+      "question": "spin up / tear down",
+      "answer": "Поднять (сервер, контейнер, окружение) и снести его. С местоимением объект встаёт внутрь: spin it up, tear it down.",
+      "example": "Let's spin up a test environment for this.\n# Давайте поднимем тестовое окружение под это.\nI'll spin it up in about ten minutes.\n# Я подниму его минут через десять.\nDon't forget to tear down the stack when you're done.\n# Не забудь снести стенд, когда закончишь."
+    },
+    {
+      "id": "en-verbs-3",
+      "question": "roll out / roll back",
+      "answer": "Раскатывать постепенно и откатывать. Существительные: rollout, rollback. Частая коллокация: roll out to 10% of users, roll back to the previous version.",
+      "example": "We're rolling it out gradually this week.\n# Мы раскатываем это постепенно на этой неделе.\nRoll it back if the error rate goes above two percent.\n# Откати это, если ошибки превысят два процента.\nThe rollout is paused for now.\n# Раскатка пока приостановлена."
+    },
+    {
+      "id": "en-verbs-4",
+      "question": "figure out / sort out / work around",
+      "answer": "Figure out — понять, разобраться, как что-то работает. Sort out — привести в порядок, разрулить. Work around — обойти проблему, не устраняя причину.",
+      "example": "I'm still figuring out how their auth works.\n# Я всё ещё разбираюсь, как работает их авторизация.\nWe sorted out the permissions issue.\n# Мы разрулили проблему с правами.\nFor now we can work around it with a retry.\n# Пока можно обойти это ретраем."
+    },
+    {
+      "id": "en-verbs-5",
+      "question": "run into / come across",
+      "answer": "Run into — наткнуться на проблему (обычно неприятную). Come across — случайно встретить что-то (в коде, в документации), более нейтрально.",
+      "example": "I ran into a weird error on the second attempt.\n# Я наткнулся на странную ошибку со второй попытки.\nDid anyone run into this before?\n# Кто-нибудь сталкивался с этим раньше?\nI came across an old script that does exactly this.\n# Я наткнулся на старый скрипт, который делает ровно это."
+    },
+    {
+      "id": "en-verbs-6",
+      "question": "follow up / circle back",
+      "answer": "Follow up — вернуться к теме позже, напомнить, дослать информацию. Circle back — вернуться к обсуждению вопроса, часто чтобы не тормозить встречу.",
+      "example": "I'll follow up with the details in the ticket.\n# Я дошлю детали в тикете.\nLet's circle back to this after the demo.\n# Давайте вернёмся к этому после демо.\nJust following up on my message from Monday.\n# Просто напоминаю о своём сообщении с понедельника."
+    },
+    {
+      "id": "en-verbs-7",
+      "question": "reach out / loop in / ping",
+      "answer": "Reach out — связаться с кем-то, обратиться. Loop in — подключить человека к обсуждению. Ping — коротко написать, «пингануть» (в IT почти официальное слово).",
+      "example": "Feel free to reach out if anything is unclear.\n# Обращайтесь, если что-то непонятно.\nI'll loop in the security team.\n# Я подключу команду безопасности.\nPing me when the build is done.\n# Пингани меня, когда сборка закончится."
+    },
+    {
+      "id": "en-verbs-8",
+      "question": "hand over / take over",
+      "answer": "Hand over — передать задачу или дежурство. Take over — принять на себя, взять на себя ответственность. Существительное handover — передача дел.",
+      "example": "I'm handing over the migration to Anna.\n# Я передаю миграцию Анне.\nCan you take over the on-call shift on Friday?\n# Можешь взять дежурство в пятницу?\nWe did a proper handover before the release.\n# Мы нормально передали дела перед релизом."
+    },
+    {
+      "id": "en-verbs-9",
+      "question": "break down / narrow down",
+      "answer": "Break down — разбить большое на части (задачу, проблему); также «сломаться» о технике. Narrow down — сузить область поиска, отсечь лишние варианты.",
+      "example": "Let's break this epic down into smaller tickets.\n# Давайте разобьём этот эпик на мелкие тикеты.\nWe narrowed it down to two services.\n# Мы сузили круг до двух сервисов.\nCan you break down the numbers by region?\n# Можешь разбить цифры по регионам?"
+    },
+    {
+      "id": "en-verbs-10",
+      "question": "own / be on the hook for",
+      "answer": "Own — отвечать за компонент, быть его владельцем (не «владеть» буквально). Be on the hook for — отвечать за результат, в том числе неприятный.",
+      "example": "Which team owns this service?\n# Какая команда отвечает за этот сервис?\nI own the deployment pipeline.\n# Я отвечаю за пайплайн деплоя.\nWe're on the hook for the fix by Friday.\n# С нас фикс к пятнице."
+    },
+    {
+      "id": "en-verbs-11",
+      "question": "bump / bump up",
+      "answer": "Bump — поднять версию зависимости или значение параметра. Также «поднять» сообщение в чате, чтобы его заметили. Существительное: a version bump.",
+      "example": "I bumped the library to 3.2.1.\n# Я поднял библиотеку до 3.2.1.\nCan we bump the memory limit to one gig?\n# Можем поднять лимит памяти до гигабайта?\nBumping this — still waiting for a review.\n# Поднимаю тему: всё ещё жду ревью."
+    },
+    {
+      "id": "en-verbs-12",
+      "question": "cut (a release / a branch)",
+      "answer": "Cut — «нарезать»: создать релиз или ветку от определённой точки. Также cut over — переключиться на новую систему (существительное cutover).",
+      "example": "We cut the release branch every Tuesday.\n# Мы нарезаем релизную ветку каждый вторник.\nLet's cut a release candidate today.\n# Давайте нарежем релиз-кандидат сегодня.\nThe cutover to the new database is planned for Saturday.\n# Переключение на новую базу запланировано на субботу."
+    },
+    {
+      "id": "en-verbs-13",
+      "question": "back up / fall back",
+      "answer": "Back up — делать резервную копию (существительное backup, слитно). Fall back (on/to) — откатиться на запасной вариант; существительное fallback.",
+      "example": "Make sure the database is backed up before the migration.\n# Убедись, что база забэкаплена перед миграцией.\nWe fall back to the cached response if the API times out.\n# Мы откатываемся на кэшированный ответ, если API не отвечает.\nThe fallback is a static page.\n# Запасной вариант — статическая страница."
+    },
+    {
+      "id": "en-verbs-14",
+      "question": "ramp up / wind down",
+      "answer": "Ramp up — наращивать (нагрузку, скорость раскатки, темп работы, вхождение в проект). Wind down — сворачивать, постепенно заканчивать.",
+      "example": "We're ramping up traffic to the new cluster.\n# Мы наращиваем трафик на новый кластер.\nIt took me two weeks to ramp up on the codebase.\n# Мне понадобилось две недели, чтобы войти в кодовую базу.\nWe're winding down support for the old API.\n# Мы сворачиваем поддержку старого API."
+    },
+    {
+      "id": "en-verbs-15",
+      "question": "hold off / push back",
+      "answer": "Hold off — придержать, не делать пока. Push back (on) — возразить, не согласиться с требованием или сроком — важный навык, чтобы не брать невыполнимое.",
+      "example": "Let's hold off on the deploy until the incident is closed.\n# Давайте придержим деплой, пока инцидент не закрыт.\nI pushed back on the deadline and explained the risks.\n# Я возразил по срокам и объяснил риски.\nWe should push back on this scope.\n# Нам стоит возразить по этому объёму работ."
+    },
+    {
+      "id": "en-verbs-16",
+      "question": "call out / point out / flag",
+      "answer": "Call out — обратить внимание на что-то важное (в том числе на проблему). Point out — указать, заметить. Flag — помечать как требующее внимания, «поднять флаг».",
+      "example": "I want to call out a risk before we start.\n# Хочу обратить внимание на риск, прежде чем начнём.\nThanks for pointing that out.\n# Спасибо, что заметил.\nI'm flagging this as a blocker for the release.\n# Помечаю это как блокер для релиза."
+    },
+    {
+      "id": "en-verbs-17",
+      "question": "carry out / roll with / keep up with",
+      "answer": "Carry out — выполнять (план, миграцию, проверку) — формально. Roll with it — принять как есть и работать дальше. Keep up with — успевать за чем-то, не отставать.",
+      "example": "We carried out the migration during the maintenance window.\n# Мы выполнили миграцию в окно обслуживания.\nThe requirements changed again, so we'll roll with it.\n# Требования снова поменялись, поработаем с тем, что есть.\nThe workers can't keep up with the queue.\n# Воркеры не успевают за очередью."
+    },
+    {
+      "id": "en-verbs-18",
+      "question": "Формальный или разговорный: как выбрать?",
+      "answer": "В чате и речи — фразовые глаголы (look into, figure out, work around). В документах, постмортемах и письмах наружу — латинские синонимы (investigate, determine, mitigate). Смешивать регистры в одном тексте не стоит.",
+      "example": "chat:      We looked into it and worked around the issue.\ndocument:  The team investigated the incident and applied a mitigation.\n# Один смысл, два регистра — выбирайте по контексту."
+    }
+  ]
+}

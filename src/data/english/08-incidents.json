@@ -1,0 +1,69 @@
+{
+  "id": "en-incidents",
+  "title": "Инциденты и on-call",
+  "order": 8,
+  "color": "#EF4444",
+  "lesson": "Инцидент на английском — это отдельный язык. Когда прод лежит, нет времени подбирать слова. Фразы должны вылетать автоматически, как команды в терминале.\n\nГлавное правило инцидента: факт, влияние, действие. «We have an outage affecting checkout» — не «кажется что-то сломалось». «I'm investigating» — не «сейчас посмотрю». Краткость спасает.\n\nВо время инцидента: incident commander ведёт, остальные выполняют. «I'm taking the IC role» / «Can someone check the logs?» / «What's the blast radius?». Статус-апдейты каждые 15-30 минут.\n\nПосле инцидента: postmortem. Blameless — никого не винят, ищут причину. «What happened» → «Why» → «Action items». Терминология: SEV1, SEV2, mitigation, root cause, action item.",
+  "cards": [
+    {
+      "id": "en-incidents-1",
+      "question": "Как объявить об инциденте?",
+      "answer": "Факт + влияние. «We have an outage affecting…» / «Production is down for…» / «Customers are seeing 500 errors on…». Кратко, конкретно, без «кажется».",
+      "example": "We have an outage affecting checkout.\n# У нас сбой, затронувший оформление заказа.\nProduction is down for EU customers.\n# Прод недоступен для клиентов из ЕС.\nCustomers are seeing 500 errors on the login page.\n# Клиенты видят 500 ошибки на странице входа."
+    },
+    {
+      "id": "en-incidents-2",
+      "question": "Как взять роль incident commander?",
+      "answer": "«I'm taking the IC role» / «I'll be the incident commander». Чётко, один человек ведёт, остальные подчиняются. IC не трогает клавиатуру — координирует.",
+      "example": "I'm taking the IC role for this incident.\n# Я беру роль IC для этого инцидента.\nAlex is IC, everyone reports to them.\n# Алекс — IC, все отчитываются ему.\nI'll coordinate, can someone else check the logs?\n# Я координирую, кто-нибудь проверит логи?"
+    },
+    {
+      "id": "en-incidents-3",
+      "question": "Как запросить действие во время инцидента?",
+      "answer": "Прямо и с именем. «@Alex, can you check the DB connections?» / «Someone needs to…». Не «кто-нибудь может» — конкретный человек, конкретное действие.",
+      "example": "@Alex, can you check the DB connection pool?\n# @Алекс, проверь пул соединений БД?\nSomeone needs to roll back the last deployment.\n# Кто-то должен откатить последний деплой.\nCan we failover to the standby region?\n# Можем переключиться на standby-регион?"
+    },
+    {
+      "id": "en-incidents-4",
+      "question": "Как дать статус-апдейт во время инцидента?",
+      "answer": "Каждые 15-30 минут. «Current status: …» / «We've identified the root cause» / «Mitigation in progress». Без воды, только факты и下一步 действия.",
+      "example": "Status update: we've identified the root cause —\na bad config push to the load balancer.\nRollback is in progress, ETA 10 minutes.\n# Апдейт: нашли причину — плохой конфиг\n# на балансировщике. Откат в процессе, ETA 10 мин."
+    },
+    {
+      "id": "en-incidents-5",
+      "question": "Как сообщить, что проблема устранена?",
+      "answer": "«The issue has been resolved» / «Service is restored» / «We're back to normal». Подтвердить мониторингом: «metrics are recovering» / «error rate is back to zero».",
+      "example": "The issue has been resolved.\nService is fully restored.\nError rate is back to zero, metrics are recovering.\n# Проблема устранена. Сервис полностью восстановлен.\n# Уровень ошибок на нуле, метрики восстанавливаются."
+    },
+    {
+      "id": "en-incidents-6",
+      "question": "Что такое blast radius и как спросить?",
+      "answer": "Blast radius = масштаб ущерба. «What's the blast radius?» / «How many users are affected?» / «Which services are impacted?». Первый вопрос после обнаружения.",
+      "example": "What's the blast radius on this?\n# Какой масштаб ущерба?\nHow many users are affected?\n# Сколько пользователей затронуто?\nWhich services are impacted?\n# Какие сервисы затронуты?"
+    },
+    {
+      "id": "en-incidents-7",
+      "question": "Что такое mitigation vs resolution?",
+      "answer": "Mitigation — временное устранение симптомов (например, откат). Resolution — устранение причины. «We've mitigated the issue» ≠ «we've resolved it».",
+      "example": "We've mitigated the issue by rolling back.\n# Мы смягчили проблему откатом.\nThe root cause is still under investigation.\n# Причина всё ещё расследуется.\nResolution will come with the next patch.\n# Окончательное решение — в следующем патче."
+    },
+    {
+      "id": "en-incidents-8",
+      "question": "Как описать postmortem?",
+      "answer": "Blameless: «What happened» → «Why» → «Action items». «Let's schedule a postmortem» / «I'll write up the postmortem». Никаких имён в контексте вины.",
+      "example": "Let's schedule a postmortem for Thursday.\n# Давайте назначим постмортем на четверг.\nI'll write up the postmortem by end of week.\n# Напишу постмортем до конца недели.\nKey action items: add monitoring, fix the deploy script.\n# Ключевые задачи: добавить мониторинг, починить скрипт деплоя."
+    },
+    {
+      "id": "en-incidents-9",
+      "question": "Что значат SEV1, SEV2, SEV3?",
+      "answer": "SEV1 = критический инцидент, прод лежит, нужен немедленный ответ. SEV2 = серьёзный, часть функционала недоступна. SEV3 = умеренный, workaround есть.",
+      "example": "Declaring SEV1: checkout is completely down.\n# Объявляю SEV1: оформление заказа полностью недоступно.\nThis is a SEV2 — search is degraded but working.\n# Это SEV2 — поиск деградирован, но работает.\nSEV3: the dashboard is slow, no user impact.\n# SEV3: дашборд медленный, влияния на пользователей нет."
+    },
+    {
+      "id": "en-incidents-10",
+      "question": "Как передать дежурство (handoff)?",
+      "answer": "Контекст + текущее состояние + что в работе. «Here's the handoff: …» / «You're now primary on-call». Никаких «разбирайся сам» — полный контекст передаётся.",
+      "example": "Handoff: SEV2 on API latency, mitigation in place.\nYou're now primary on-call.\nNext step: monitor for the next 2 hours.\n# Передача: SEV2 по задержке API, смягчение есть.\n# Ты теперь primary on-call.\n# Следующий шаг: мониторинг 2 часа."
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "id": "en-negotiation",
+  "title": "Переговоры и обсуждение условий",
+  "order": 9,
+  "color": "#A78BFA",
+  "lesson": "Переговоры на английском в IT — это не про торг на базаре, а про профессиональное обсуждение: зарплата, сроки, ресурсы, архитектурные решения. Ключевое отличие от русского — всё упаковано в вежливость, но суть прямая.\n\nГлавный принцип: never accept immediately. «Let me think about it» / «I need to check with the team» — это норма, не слабость. Мгновенное «yes» читается как отчаяние.\n\nВторой принцип: anchoring. Первая названная цифра — якорь. Если вам предлагают X, вы говорите «I was thinking more like Y» где Y выше. Компромисс окажется ближе к вашему якорю.\n\nТретий: trade-offs, не ультиматумы. «If we can do X, then I'm flexible on Y» — это переговоры. «Take it or leave it» — конфликт. Всегда предлагайте альтернативу.",
+  "cards": [
+    {
+      "id": "en-negotiation-1",
+      "question": "Как выигать время на обдумывание?",
+      "answer": "«Let me think about it» / «I need to check with the team» / «Can I get back to you by…?». Никогда не принимайте решение мгновенно — это норма, не слабость.",
+      "example": "Let me think about it and get back to you tomorrow.\n# Дай подумать, отвечу завтра.\nI need to check with the team first.\n# Сначала нужно посоветоваться с командой.\nCan I get back to you by end of week?\n# Могу ответить до конца недели?"
+    },
+    {
+      "id": "en-negotiation-2",
+      "question": "Как назвать свою цифру (anchoring)?",
+      "answer": "Первая цифра — якорь. «I was thinking something in the range of…» / «Based on my research, I'm looking at…». Выше желаемого — компромисс окажется ближе к вам.",
+      "example": "I was thinking something in the range of $120-140K.\n# Я думал в диапазоне $120-140K.\nBased on market rates, I'm looking at around $X.\n# По рыночным ставкам, я рассматриваю около $X.\nMy expectation is in the $Y range.\n# Мои ожидания — в районе $Y."
+    },
+    {
+      "id": "en-negotiation-3",
+      "question": "Как предложить компромисс (trade-off)?",
+      "answer": "«If we can do X, then I'm flexible on Y» / «I could accept A if we adjust B». Trade-off, не ультиматум. Вы даёте, чтобы получить.",
+      "example": "If we can do remote 3 days, I'm flexible on salary.\n# Если 3 дня удалёнки, я гибок по зарплате.\nI could start in 4 weeks if we adjust the start date.\n# Могу начать через 4 недели, если сдвинуть дату.\nI'd accept that range if there's a signing bonus.\n# Я бы принял этот диапазон, если есть signing bonus."
+    },
+    {
+      "id": "en-negotiation-4",
+      "question": "Как вежливо отклонить предложение?",
+      "answer": "Благодарность + причина + дверь открыта. «Thank you for the offer, but…» / «Unfortunately, that doesn't quite work for me» / «I'm going to decline this one».",
+      "example": "Thank you for the offer, but I've decided to go with another option.\n# Спасибо за оффер, но я выбрал другой вариант.\nUnfortunately, that doesn't quite work for me financially.\n# К сожалению, мне это не совсем подходит финансово.\nI appreciate the offer, but I'm going to pass.\n# Ценю оффер, но вынужден отказаться."
+    },
+    {
+      "id": "en-negotiation-5",
+      "question": "Как обсудить сроки проекта?",
+      "answer": "Реалистично + обоснование. «Based on the scope, I'd estimate…» / «That timeline is tight, could we…?». Не «нет, не успею», а «вот что нужно, чтобы успеть».",
+      "example": "Based on the scope, I'd estimate 6 weeks.\n# По объёму работы — 6 недель.\nThat timeline is tight — could we cut the scope?\n# Сроки тесные — можем урезать объём?\nI can deliver by Friday if we drop the reporting feature.\n# Могу сдать к пятнице, если уберём отчёты."
+    },
+    {
+      "id": "en-negotiation-6",
+      "question": "Как попросить повышение зарплаты?",
+      "answer": "Факты + вклад + рыночные данные. «I'd like to discuss my compensation» / «Based on my contributions this year…» / «Market rate for this role is…».",
+      "example": "I'd like to discuss my compensation at my next 1:1.\n# Хочу обсудить мою компенсацию на следующей 1:1.\nBased on my contributions this year, I'd like to request a review.\n# По моему вкладу за год, хочу попросить ревью.\nThe market rate for my role is around $X.\n# Рыночная ставка для моей роли — около $X."
+    },
+    {
+      "id": "en-negotiation-7",
+      "question": "Как обсудить ресурсы с командой?",
+      "answer": "«We need more capacity for…» / «I'd like to request an additional…» / «Can we reallocate…?». Обоснование: что заблокировано без ресурса.",
+      "example": "We need more capacity for the migration project.\n# Нам нужны больше ресурсов на проект миграции.\nI'd like to request an additional engineer for Q3.\n# Хочу запросить дополнительного инженера на Q3.\nCan we reallocate someone from the legacy team?\n# Можем перевести кого-то из legacy-команды?"
+    },
+    {
+      "id": "en-negotiation-8",
+      "question": "Как возразить против архитектурного решения?",
+      "answer": "«I have some concerns about…» / «I'm not sure that approach will scale» / «Have we considered the trade-offs?». Аргумент, не эмоция.",
+      "example": "I have some concerns about using a monolith here.\n# У меня есть опасения по поводу монолита тут.\nI'm not sure that approach will scale past 10K users.\n# Не уверен, что этот подход масштабируется за 10K.\nHave we considered the maintenance cost?\n# Мы учли стоимость поддержки?"
+    },
+    {
+      "id": "en-negotiation-9",
+      "question": "Как принять предложение?",
+      "answer": "«I'm happy to accept» / «That works for me» / «Let's move forward». Подтвердить ключевые условия письменно: зарплата, старт, формат работы.",
+      "example": "I'm happy to accept the offer!\n# Рад принять оффер!\nThat works for me — let's move forward.\n# Мне подходит — давайте двигаться дальше.\nCan you send the details in writing so I can confirm?\n# Можешь прислать детали письменно для подтверждения?"
+    },
+    {
+      "id": "en-negotiation-10",
+      "question": "Что такое counter-offer и как его сделать?",
+      "answer": "Counter-offer = встречное предложение. «Could we do $X instead?» / «I was hoping for something closer to…». Всегда с обоснованием, не просто «дайте больше».",
+      "example": "Could we do $130K instead of $115K?\n# Можем сделать $130K вместо $115K?\nI was hoping for something closer to $140K.\n# Я надеялся на что-то ближе к $140K.\nWould $125K plus a signing bonus work?\n# Подойдёт $125K плюс signing bonus?"
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "id": "en-emails",
+  "title": "Деловые email и тикеты",
+  "order": 5,
+  "color": "#34D399",
+  "lesson": "Email в IT — это не литература, это структура. Хороший email читается за 30 секунд и содержит: тему, контекст, запрос, срок. Плохой email — стена текста, из которой непонятно, что от тебя хотят.\n\nТема письма — самая важная строка. «Quick question» — плохо. «Action needed: prod DB backup failing nightly — need approval for script fix» — хорошо. Тема должна содержать глагол действия, если требуется реакция.\n\nСтруктура абзацев: BLUF (bottom line up front) — сначала суть, потом детали. «I need your approval to merge the hotfix by 3 PM today. Details below.» — это правильный паттерн.\n\nТикеты (Jira, GitHub Issues) — отдельный жанр. Они должны быть самодостаточными: воспроизвести, ожидание, фактический результат, окружение, логи. Без «у меня не работает» — только конкретика.",
+  "cards": [
+    {
+      "id": "en-emails-1",
+      "question": "Как написать хорошую тему письма?",
+      "answer": "Тема = суть + действие. «Action needed: …» / «FYI: …» / «Review request: …». Избегайте «Quick question» и «Hello» — получатель не поймёт приоритет.",
+      "example": "Action needed: prod DB backup failing nightly\n# Требуется действие: бэкап прод-БД падает каждую ночь\nFYI: new staging environment is ready\n# К сведению: новый стейдж готов\nReview request: Terraform module for VPC\n# Ревью: Terraform-модуль для VPC"
+    },
+    {
+      "id": "en-emails-2",
+      "question": "Что такое BLUF и как его использовать?",
+      "answer": "BLUF = Bottom Line Up Front. Сначала главное: что нужно, к какому сроку. Потом детали. Получатель сразу понимает, что от него хотят, даже если читает только первое предложение.",
+      "example": "I need your approval to merge the hotfix by 3 PM.\n# Мне нужно ваше одобрение на мердж хотфикса до 3 вечера.\nDetails below, but the short version: we need to roll back.\n# Детали ниже, но кратко: нужен откат.\nTL;DR: the migration is blocked, we need a decision today.\n# Кратко: миграция заблокирована, нужно решение сегодня."
+    },
+    {
+      "id": "en-emails-3",
+      "question": "Как вежливо поднять проблему?",
+      "answer": "Факты без эмоций: «I noticed that…» / «It looks like…» / «We might have an issue with…». Без обвинений: не «you broke», а «it seems like something broke».",
+      "example": "I noticed that the staging environment is down.\n# Я заметил, что стейдж недоступен.\nIt looks like the pipeline is failing on the test stage.\n# Похоже, пайплайн падает на стадии тестов.\nWe might have an issue with the certificate renewal.\n# Возможно, есть проблема с обновлением сертификата."
+    },
+    {
+      "id": "en-emails-4",
+      "question": "Как запросить ревью или апрув?",
+      "answer": "Конкретика: что ревьюить, к какому сроку, ссылка. «Could you review X by Y?» / «I'd appreciate your feedback on…» / «Please take a look when you get a chance».",
+      "example": "Could you review PR #142 by end of day?\n# Можешь ревьюнуть PR #142 до конца дня?\nI'd appreciate your feedback on the migration plan.\n# Буду признателен за фидбек по плану миграции.\nPlease take a look when you get a chance — no rush.\n# Посмотри, когда будет время — не срочно."
+    },
+    {
+      "id": "en-emails-5",
+      "question": "Как описать баг в тикете?",
+      "answer": "Шаблон: Steps to reproduce / Expected / Actual / Environment / Logs. Каждый шаг нумерован, конкретен, воспроизводим. Без «не работает» — только что именно происходит.",
+      "example": "## Steps to reproduce\n1. Deploy v2.3 to staging\n2. Run the integration test suite\n\n## Expected: all tests pass\n## Actual: 3 tests fail with timeout\n\n## Env: staging, k8s 1.28, node 20\n\n## Logs: attached"
+    },
+    {
+      "id": "en-emails-6",
+      "question": "Как вежливо эскалировать проблему?",
+      "answer": "Факты + влияние + что нужно. «This is now blocking the release» / «I wanted to flag this as high priority» / «Could we escalate this to the team lead?». Без паники и эмоций.",
+      "example": "This is now blocking the Friday release.\n# Это блокирует релиз в пятницу.\nI wanted to flag this as high priority.\n# Хочу отметить это как высокий приоритет.\nCould we escalate this to the team lead?\n# Можем эскалировать тимлиду?"
+    },
+    {
+      "id": "en-emails-7",
+      "question": "Как сообщить о статусе (status update)?",
+      "answer": "Коротко и по делу: «Done: … / In progress: … / Blocked: …». Без воды. Если заблокировано — указать блокер и что нужно для разблокировки.",
+      "example": "Done: DB migration script tested locally\nIn progress: CI pipeline update\nBlocked: waiting on infra team for VPN access\n# Готово: скрипт миграции протестирован локально\n# В работе: обновление CI пайплайна\n# Заблокировано: ждём доступ к VPN от инфра-команды"
+    },
+    {
+      "id": "en-emails-8",
+      "question": "Как извиниться за задержку или ошибку?",
+      "answer": "Коротко, без самоуничижения: «Apologies for the delay» / «Sorry about that, here's the fix» / «My bad, I should have caught this earlier». Дальше — решение, не оправдания.",
+      "example": "Apologies for the delay, here's the updated report.\n# Извинения за задержку, вот обновлённый отчёт.\nSorry about that — I've pushed a fix already.\n# Извини — я уже запушил исправление.\nMy bad, I should have tested with the new version.\n# Моя ошибка, надо было тестить с новой версией."
+    },
+    {
+      "id": "en-emails-9",
+      "question": "Как формально закрыть письмо?",
+      "answer": "«Best regards» / «Thanks» / «Let me know if you have questions». Подпись: имя + роль. Для тикетов — «Closing this as resolved» / «Marking as done».",
+      "example": "Let me know if you have any questions.\nBest regards,\nAlex\n# Дайте знать, если есть вопросы.\n# С уважением, Алекс\n\nClosing this as resolved, feel free to reopen.\n# Закрываю как решённое, можете reopen-нуть."
+    },
+    {
+      "id": "en-emails-10",
+      "question": "Как попросить доступы или ресурсы?",
+      "answer": "Что нужно, зачем, на сколько. «Could you grant me access to…?» / «I need permissions for… in order to…». Всегда указывайте причину — админы не дают доступы без обоснования.",
+      "example": "Could you grant me read access to the prod logs?\n# Можешь дать мне доступ на чтение прод-логов?\nI need write access to the Terraform repo to fix the module.\n# Мне нужен write-доступ к репо Terraform для фикса модуля.\nReason: I'm on call next week and need to debug issues.\n# Причина: я на дежурстве на следующей неделе."
+    }
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "id": "en-core",
+  "title": "Ядро IT-лексики",
+  "order": 0,
+  "color": "#7DA9F2",
+  "lesson": "В английском для IT работает правило Парето: примерно двести слов покрывают почти всё, что вы услышите на созвоне и прочитаете в тикете. Поэтому начинать нужно не с грамматики, а с ядра лексики — тех слов, которые повторяются каждый день: deploy, release, build, issue, fix, scope, downtime, latency.\n\nВажный момент: многие из этих слов вы уже знаете как «айтишный жаргон» на русском — задеплоить, зарелизить, смёржить. Это огромное преимущество: смысл понятен, нужно лишь выучить правильную форму и произношение. Опасность обратная — рунглиш вроде «I will merge it on prod tomorrow», где предлог и время выдают неносителя.\n\nОбратите внимание на пары «глагол — существительное»: deploy / deployment, release / release, build / build, fix / fix. В английском одно и то же слово часто работает и глаголом, и существительным, и разница видна только по позиции в предложении. Это упрощает жизнь: выучив слово, вы получаете сразу две формы.\n\nВторая полезная привычка — запоминать слово вместе с типичным окружением, то есть коллокацией. Не просто bug, а fix a bug, reproduce a bug, file a bug. Не просто release, а cut a release, ship a release, roll back a release. Носители узнают уровень языка именно по коллокациям, а не по размеру словаря.\n\nИ третье: заведите привычку читать вслух. Технические слова часто произносятся не так, как выглядят: queue, cache, deploy, schema, Kubernetes. Если вы проговорили слово десять раз сами, вы узнаете его в чужой быстрой речи — а это главная проблема на первых созвонах.",
+  "cards": [
+    {
+      "id": "en-core-1",
+      "question": "deploy / deployment",
+      "answer": "Выкладывать код на сервер и сам факт выкладки. Глагол — deploy, существительное — deployment. Предлог: deploy to production (не «on production»).",
+      "example": "We deploy to production twice a week.\n# Мы деплоим в прод два раза в неделю.\nThe deployment failed on the second stage.\n# Деплой упал на втором этапе.\nCan you deploy this to staging first?\n# Можешь сначала задеплоить это на стейдж?"
+    },
+    {
+      "id": "en-core-2",
+      "question": "release / ship",
+      "answer": "Release — выпуск версии для пользователей. Ship — «выпустить, отдать пользователям», очень частый разговорный вариант. Коллокации: cut a release, ship a feature.",
+      "example": "We're shipping the new dashboard on Friday.\n# Мы выпускаем новый дашборд в пятницу.\nLet's cut a release once the tests are green.\n# Нарежем релиз, как только тесты станут зелёными.\nThis didn't make it into the release.\n# Это не попало в релиз."
+    },
+    {
+      "id": "en-core-3",
+      "question": "build",
+      "answer": "Сборка проекта (существительное) и собирать (глагол). В CI «the build is red / broken» значит сборка упала, «green» — прошла.",
+      "example": "The build is failing on main.\n# Сборка падает на main.\nCould you take a look? You broke the build.\n# Можешь посмотреть? Ты сломал сборку.\nThe build takes about eight minutes.\n# Сборка занимает примерно восемь минут."
+    },
+    {
+      "id": "en-core-4",
+      "question": "issue / bug / defect",
+      "answer": "Issue — любая задача или проблема в трекере (нейтрально). Bug — ошибка в работе. Defect — формальный термин в корпоративных процессах. Коллокации: file an issue, reproduce a bug, fix a bug.",
+      "example": "I filed an issue with the logs attached.\n# Я создал тикет и приложил логи.\nI can't reproduce the bug locally.\n# Я не могу воспроизвести баг локально.\nIs this a known issue?\n# Это известная проблема?"
+    },
+    {
+      "id": "en-core-5",
+      "question": "fix / workaround / root cause",
+      "answer": "Fix — исправление. Workaround — временный обход проблемы. Root cause — настоящая причина. На разборе инцидента у вас спросят именно root cause, а не симптом.",
+      "example": "We applied a workaround, the proper fix is coming next week.\n# Мы применили обходное решение, нормальный фикс будет на следующей неделе.\nThe root cause was a missing index.\n# Корневой причиной был отсутствующий индекс.\nThis is a quick fix, not a long-term solution.\n# Это быстрый фикс, а не долгосрочное решение."
+    },
+    {
+      "id": "en-core-6",
+      "question": "environment (env): production, staging, dev",
+      "answer": "Окружение. В речи почти всегда сокращают: prod, stage/staging, dev. Предлог: on production, in the staging environment. «Прод» как существительное — production, без артикля.",
+      "example": "It works on staging but breaks on production.\n# На стейдже работает, а на проде ломается.\nDon't test it in prod.\n# Не тестируй это на проде.\nWhich environment are you on?\n# В каком окружении ты сейчас?"
+    },
+    {
+      "id": "en-core-7",
+      "question": "downtime / outage / incident",
+      "answer": "Downtime — время недоступности. Outage — сбой, из-за которого сервис лежит. Incident — общий термин для любого происшествия, включая частичную деградацию.",
+      "example": "We had a 20-minute outage this morning.\n# Утром у нас был 20-минутный сбой.\nThe migration requires about five minutes of downtime.\n# Миграция требует около пяти минут простоя.\nWe're currently investigating an incident.\n# Мы сейчас разбираем инцидент."
+    },
+    {
+      "id": "en-core-8",
+      "question": "latency / throughput / load",
+      "answer": "Latency — задержка ответа (мс). Throughput — сколько запросов система обрабатывает за время. Load — нагрузка. Частая ошибка: говорить speed вместо latency, это звучит неточно.",
+      "example": "Latency spiked to two seconds.\n# Задержка подскочила до двух секунд.\nWe need higher throughput without adding latency.\n# Нам нужна большая пропускная способность без роста задержки.\nThe service is under heavy load right now.\n# Сервис сейчас под большой нагрузкой."
+    },
+    {
+      "id": "en-core-9",
+      "question": "scope / requirement / trade-off",
+      "answer": "Scope — объём работ по задаче. Requirement — требование. Trade-off — компромисс между двумя свойствами. Полезная фраза: scope creep — незаметное расползание задачи.",
+      "example": "That's out of scope for this sprint.\n# Это вне объёма задач этого спринта.\nThere's a trade-off between speed and reliability.\n# Здесь компромисс между скоростью и надёжностью.\nCan you clarify the requirements?\n# Можешь уточнить требования?"
+    },
+    {
+      "id": "en-core-10",
+      "question": "estimate / deadline / ETA",
+      "answer": "Estimate — оценка трудозатрат (и глагол «оценивать»). Deadline — крайний срок. ETA (estimated time of arrival) — «когда будет готово», очень частое сокращение в чатах.",
+      "example": "What's your ETA on the migration?\n# Когда примерно закончишь миграцию?\nMy rough estimate is two or three days.\n# Моя грубая оценка — два-три дня.\nWe're going to miss the deadline, and here's why.\n# Мы не успеем к сроку, и вот почему."
+    },
+    {
+      "id": "en-core-11",
+      "question": "feature / enhancement / improvement",
+      "answer": "Feature — новая функциональность. Enhancement — улучшение существующей (частый ярлык в трекерах). Improvement — общее слово для улучшения, в том числе процесса или производительности.",
+      "example": "This is a feature request, not a bug.\n# Это запрос на новую функциональность, а не баг.\nI opened an enhancement for the search filters.\n# Я создал тикет на улучшение фильтров поиска.\nA small improvement: we cut the build time in half.\n# Небольшое улучшение: мы сократили время сборки вдвое."
+    },
+    {
+      "id": "en-core-12",
+      "question": "Как сказать: «эта задача заблокирована»?",
+      "answer": "I'm blocked on … / This is blocked by … Блокер — blocker. Это ключевая фраза на стендапе: она сигнализирует команде, что нужна помощь, и её ждут прямо в такой формулировке.",
+      "example": "I'm blocked on the API keys — I need access from the platform team.\n# Я заблокирован из-за ключей API: нужен доступ от платформенной команды.\nThis ticket is blocked by the database migration.\n# Этот тикет заблокирован миграцией базы.\nNo blockers on my side.\n# С моей стороны блокеров нет."
+    },
+    {
+      "id": "en-core-13",
+      "question": "legacy / technical debt / refactor",
+      "answer": "Legacy — старый код или система, которую поддерживают, но не любят. Technical debt (tech debt) — технический долг. Refactor — переписать без изменения поведения.",
+      "example": "This is a legacy service, nobody owns it anymore.\n# Это legacy-сервис, у него больше нет владельца.\nWe're paying down tech debt this quarter.\n# В этом квартале мы разгребаем техдолг.\nI'd like to refactor this before adding new logic.\n# Я хотел бы отрефакторить это до добавления новой логики."
+    },
+    {
+      "id": "en-core-14",
+      "question": "rollback / revert / roll out",
+      "answer": "Roll out — постепенно раскатывать. Rollback — вернуть предыдущую версию (сущ. и глагол roll back). Revert — отменить коммит в git. В речи их часто путают: revert про код, rollback про деплой.",
+      "example": "We rolled back the release after the error rate spiked.\n# Мы откатили релиз после роста ошибок.\nLet's roll out the feature to 10% of users first.\n# Давайте сначала раскатим фичу на 10% пользователей.\nI reverted my commit on main.\n# Я откатил свой коммит на main."
+    },
+    {
+      "id": "en-core-15",
+      "question": "on-call / handover / escalate",
+      "answer": "On-call — дежурство (be on call — быть на дежурстве). Handover — передача дел следующей смене. Escalate — поднять вопрос выше или подключить другую команду.",
+      "example": "I'm on call this week.\n# Я на дежурстве на этой неделе.\nI'll write a short handover before I go on vacation.\n# Я напишу короткую передачу дел перед отпуском.\nIf it's still failing in an hour, escalate to the DBA team.\n# Если через час всё ещё падает, эскалируй к команде DBA."
+    },
+    {
+      "id": "en-core-16",
+      "question": "Как сказать: «у нас сломался прод, разбираемся»?",
+      "answer": "Стандартная формулировка: We're aware of the issue and we're looking into it. Не нужно писать «prod is broken, sorry» — принято сообщать факт, влияние и что вы делаете.",
+      "example": "We're seeing elevated error rates on the API. We're aware and investigating.\n# Мы видим повышенный уровень ошибок в API. Мы в курсе и разбираемся.\nWill share an update in 15 minutes.\n# Пришлю обновление через 15 минут.\nThe issue has been mitigated, we're monitoring.\n# Проблема локализована, продолжаем наблюдать."
+    },
+    {
+      "id": "en-core-17",
+      "question": "scale up / scale out / scale down",
+      "answer": "Scale up — увеличить мощность одной машины (вертикально). Scale out — добавить машины (горизонтально). Scale down — уменьшить. Autoscaling — автомасштабирование.",
+      "example": "We scaled out to six instances during the sale.\n# На распродаже мы масштабировались до шести инстансов.\nScaling up the database bought us a few weeks.\n# Вертикальное масштабирование базы дало нам пару недель.\nThe cluster scales down automatically at night.\n# Ночью кластер масштабируется вниз автоматически."
+    },
+    {
+      "id": "en-core-18",
+      "question": "backward compatible / breaking change",
+      "answer": "Backward compatible — обратно совместимо, старые клиенты продолжают работать. Breaking change — несовместимое изменение, которое ломает существующих пользователей API.",
+      "example": "Is this change backward compatible?\n# Это изменение обратно совместимо?\nRenaming the field would be a breaking change.\n# Переименование поля будет несовместимым изменением.\nWe'll keep both fields for one release to stay compatible.\n# Мы оставим оба поля на один релиз ради совместимости."
+    }
+  ]
+}

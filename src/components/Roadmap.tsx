@@ -1,19 +1,36 @@
-import type { Module } from '../types'
+import type { Track, TrackId } from '../types'
 
 type RoadmapProps = {
-  modules: Module[]
+  track: Track
+  tracks: Track[]
   known: Set<string>
   onOpen: (moduleId: string) => void
+  onSwitchTrack: (id: TrackId) => void
 }
 
-export function Roadmap({ modules, known, onOpen }: RoadmapProps) {
+export function Roadmap({ track, tracks, known, onOpen, onSwitchTrack }: RoadmapProps) {
+  const modules = track.modules
   return (
     <div className="space-y-3">
+      <div className="mb-2 flex gap-2">
+        {tracks.map((t) => (
+          <button
+            key={t.id}
+            type="button"
+            onClick={() => onSwitchTrack(t.id)}
+            className={`btn ${track.id === t.id ? 'border-agent/50 text-agent' : ''}`}
+          >
+            {t.title}
+          </button>
+        ))}
+      </div>
+
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-slate-100">DevOps с нуля</h1>
+        <h1 className="text-2xl font-bold text-slate-100" style={{ color: track.accent }}>
+          {track.title}
+        </h1>
         <p className="mt-1 text-sm text-slate-400">
-          {modules.length} модулей · {modules.reduce((s, m) => s + m.cards.length, 0)} карточек ·
-          работает офлайн
+          {track.subtitle} · {modules.length} модулей · {track.totalCards} карточек · работает офлайн
         </p>
       </div>
 

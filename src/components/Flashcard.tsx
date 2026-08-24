@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import type { Card, Module } from '../types'
+import { CodeBlock } from './CodeBlock'
 import { RichText } from './RichText'
 
 type FlashcardProps = {
@@ -43,7 +44,7 @@ export function Flashcard({ card, module, index, total, flipped, onFlip }: Flash
             <p className="text-[15px] leading-relaxed text-slate-300">
               <RichText text={card.answer} />
             </p>
-            <pre className="code-block">{card.example}</pre>
+            <CodeBlock code={card.example} />
           </div>
         </Face>
       </div>

@@ -42,20 +42,40 @@ export async function saveKnown(known: Set<string>): Promise<void> {
   }
 }
 
+export type Provider = 'gemini' | 'openrouter'
+
 export type Settings = {
-  apiKey: string
-  model: string
+  provider: Provider
+  geminiApiKey: string
+  geminiModel: string
+  openrouterApiKey: string
+  openrouterModel: string
 }
 
-export const DEFAULT_MODEL = 'claude-sonnet-4-5'
+export const DEFAULT_GEMINI_MODEL = 'gemini-2.0-flash'
+export const DEFAULT_OPENROUTER_MODEL = 'google/gemini-2.0-flash-exp:free'
+
+export const DEFAULT_SETTINGS: Settings = {
+  provider: 'gemini',
+  geminiApiKey: '',
+  geminiModel: DEFAULT_GEMINI_MODEL,
+  openrouterApiKey: '',
+  openrouterModel: DEFAULT_OPENROUTER_MODEL
+}
 
 export async function loadSettings(): Promise<Settings> {
   try {
     const db = await getDB()
     const stored = (await db.get(STORE_SETTINGS, 'ai')) as Partial<Settings> | undefined
-    return { apiKey: stored?.apiKey ?? '', model: stored?.model || DEFAULT_MODEL }
+    return {
+      provider: stored?.provider ?? DEFAULT_SETTINGS.provider,
+      geminiApiKey: stored?.geminiApiKey ?? '',
+      geminiModel: stored?.geminiModel || DEFAULT_GEMINI_MODEL,
+      openrouterApiKey: stored?.openrouterApiKey ?? '',
+      openrouterModel: stored?.openrouterModel || DEFAULT_OPENROUTER_MODEL
+    }
   } catch {
-    return { apiKey: '', model: DEFAULT_MODEL }
+    return { ...DEFAULT_SETTINGS }
   }
 }
 

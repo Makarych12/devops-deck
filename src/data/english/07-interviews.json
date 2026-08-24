@@ -1,0 +1,69 @@
+{
+  "id": "en-interviews",
+  "title": "Собеседования на английском",
+  "order": 7,
+  "color": "#F472B6",
+  "lesson": "Собеседование на английском — это выступление, а не разговор. Вы заранее готовите ответы на 10-15 типовых вопросов и тренируете их вслух. Импровизация на неродном языке работает плохо.\n\nГлавный фреймворк для поведенческих вопросов — STAR: Situation, Task, Action, Result. На вопрос «Tell me about a time when…» вы рассказываете конкретную историю в этой структуре, 2-3 минуты.\n\nТехнические вопросы: думайте вслух. «Let me think about this…» / «My first approach would be…» / «Let me consider the trade-offs». Молчание 30 секунд = минус, рассуждение вслух = плюс, даже если ответ неверный.\n\nВопросы кандидата: всегда задавайте 2-3 вопроса в конце. «What does the on-call rotation look like?» / «How does the team handle technical debt?». Отсутствие вопросов = отсутствие интереса.",
+  "cards": [
+    {
+      "id": "en-interviews-1",
+      "question": "Как рассказать о себе (tell me about yourself)?",
+      "answer": "Present → Past → Future. Кто вы сейчас → что делали → зачем пришли. 1-2 минуты, без воды. «I'm a DevOps engineer with X years of experience, focusing on…»",
+      "example": "I'm a DevOps engineer with 3 years of experience,\nmainly working with Kubernetes and Terraform.\nBefore that, I was a backend developer,\nwhich helps me understand the developer side of CI/CD.\nI'm looking for a role where I can scale infrastructure\nfor a growing team.\n# Я DevOps-инженер с 3 годами опыта,\n# в основном Kubernetes и Terraform.\n# До этого был бэкенд-разработчиком,\n# что помогает понимать CI/CD со стороны разработчика.\n# Ищу роль, где смогу масштабировать инфраструктуру."
+    },
+    {
+      "id": "en-interviews-2",
+      "question": "Что такое STAR и как его использовать?",
+      "answer": "STAR = Situation, Task, Action, Result. На «Tell me about a time when…» — конкретная история: ситуация, ваша задача, что сделали, результат с цифрами.",
+      "example": "Situation: our deploys were taking 40 minutes.\nTask: I was asked to speed them up.\nAction: I introduced incremental Docker builds\nand parallelized the test suite.\nResult: deploy time dropped to 8 minutes.\n# Ситуация: деплой занимал 40 минут.\n# Задача: ускорить.\n# Действие: инкрементальные сборки Docker\n# и параллельные тесты.\n# Результат: деплой за 8 минут."
+    },
+    {
+      "id": "en-interviews-3",
+      "question": "Как говорить вслух при решении технической задачи?",
+      "answer": "Думайте вслух: «Let me think about this…» / «My first approach would be…» / «Let me consider the trade-offs». Молчание — минус, рассуждение — плюс.",
+      "example": "Let me think about this for a second.\n# Дай подумать секунду.\nMy first approach would be to use a hash map here.\n# Мой первый подход — использовать hash map тут.\nLet me consider the trade-offs: speed vs memory.\n# Подумаю над trade-off: скорость vs память."
+    },
+    {
+      "id": "en-interviews-4",
+      "question": "Как рассказать о неудаче или ошибке?",
+      "answer": "Честно + что извлёк. «I made a mistake by…» / «The lesson I learned was…». Без самоуничижения и без перекладывания вины. Ошибка + вывод = рост.",
+      "example": "I once pushed a config change without testing on staging.\nIt caused a 20-minute outage.\nThe lesson: always test in staging first,\nand I set up a pre-commit hook after that.\n# Я однажды запушил конфиг без теста на стейдже.\n# Это вызвало 20-минутный простой.\n# Урок: всегда тестить на стейдже,\n# после этого настроил pre-commit hook."
+    },
+    {
+      "id": "en-interviews-5",
+      "question": "Как рассказать о конфликте в команде?",
+      "answer": "Факты, не эмоции. «We disagreed on…» / «I proposed…» / «We ended up…». Решение — компромисс, не победа. Покажите, что умеете слушать.",
+      "example": "We disagreed on whether to use Helm or Kustomize.\nI proposed we prototype both for a week.\nWe ended up going with Helm because\nthe team found it easier to manage.\n# Мы расходились во мнениях: Helm или Kustomize.\n# Я предложил прототип обеих за неделю.\n# В итоге выбрали Helm — команде было проще."
+    },
+    {
+      "id": "en-interviews-6",
+      "question": "Как ответить «почему вы хотите к нам?»",
+      "answer": "Конкретика о компании + ваш вклад. «I'm excited about your approach to…» / «I see an opportunity to…». Не «вы крутые», а «вот что я могу привнести».",
+      "example": "I'm excited about your move to GitOps.\nI've implemented ArgoCD at my current job\nand I'd love to help scale that here.\n# Мне интересен ваш переход к GitOps.\n# Я внедрял ArgoCD на текущей работе\n# и хотел бы помочь масштабировать это у вас."
+    },
+    {
+      "id": "en-interviews-7",
+      "question": "Какие вопросы задать в конце интервью?",
+      "answer": "2-3 вопроса о команде и процессах: «What does the on-call rotation look like?» / «How do you handle technical debt?» / «What's the biggest challenge right now?». Отсутствие вопросов = нет интереса.",
+      "example": "What does the on-call rotation look like?\n# Как выглядит график дежурств?\nHow does the team handle technical debt?\n# Как команда работает с техническим долгом?\nWhat's the biggest infrastructure challenge right now?\n# Какая главная инфраструктурная проблема сейчас?"
+    },
+    {
+      "id": "en-interviews-8",
+      "question": "Как назвать свои слабые стороны?",
+      "answer": "Реальная слабость + как работаете над ней. Не «I'm a perfectionist» (штамп). «I sometimes struggle with…, so I've started…» — честно и конструктивно.",
+      "example": "I sometimes struggle with public speaking,\nso I've started presenting at team meetings\nto get more comfortable.\n# Мне бывает трудно выступать публично,\n# поэтому я начал выступать на командных встречах,\n# чтобы привыкнуть."
+    },
+    {
+      "id": "en-interviews-9",
+      "question": "Как обсудить зарплату на английском?",
+      "answer": "Диапазон, не точная цифра. «Based on my research and experience, I'm looking for something in the range of…». Гибкость: «I'm open to discussing this based on the full package».",
+      "example": "Based on my research, I'm looking at around $X to $Y.\n# По моим данным, я рассматриваю $X–$Y.\nI'm open to discussing this based on the full package.\n# Открыт к обсуждению с учётом всего пакета.\nWhat's the range you have in mind for this role?\n# Какой диапазон вы рассматриваете для этой роли?"
+    },
+    {
+      "id": "en-interviews-10",
+      "question": "Как ответить, если не знаете ответ?",
+      "answer": "Честно + ход мыслей. «I'm not 100% sure, but here's how I'd approach it…» / «I haven't worked with that specifically, but…». Не выдумывайте — покажите, как думаете.",
+      "example": "I'm not 100% sure, but here's how I'd approach it:\nI'd check the docs first, then look at the source code.\n# Не уверен на 100%, но подошёл бы так:\n# сначала документация, потом исходный код.\nI haven't used that tool, but I've used something similar.\n# Не работал с этим инструментом, но использовал похожее."
+    }
+  ]
+}

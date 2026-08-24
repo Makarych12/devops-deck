@@ -1,4 +1,4 @@
-const PING_URL = 'https://api.anthropic.com/v1/messages'
+const PING_URL = 'https://generativelanguage.googleapis.com'
 const PING_TIMEOUT_MS = 2500
 
 export async function probeOnline(timeoutMs = PING_TIMEOUT_MS): Promise<boolean> {

@@ -14,4 +14,15 @@ export type Module = {
   cards: Card[]
 }
 
+export type TrackId = 'devops' | 'english'
+
+export type Track = {
+  id: TrackId
+  title: string
+  subtitle: string
+  accent: string
+  modules: Module[]
+  totalCards: number
+}
+
 export type Glossary = Record<string, string>

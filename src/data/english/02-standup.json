@@ -1,0 +1,105 @@
+{
+  "id": "en-standup",
+  "title": "Стендап и Agile-ритуалы",
+  "order": 2,
+  "color": "#F2A93B",
+  "lesson": "Стендап — самое частое место, где вы говорите по-английски, и одновременно самое простое: у него жёсткая структура из трёх пунктов. Что я сделал вчера, что делаю сегодня, что меня блокирует. Достаточно выучить пять-шесть шаблонных фраз, и вы будете звучать уверенно с первого дня.\n\nГлавная ошибка новичка — рассказывать процесс вместо результата. Фраза «yesterday I was working on the ticket» не сообщает ничего. Носители говорят через результат и статус: «I finished the migration script, it's in review». Это же экономит время команды.\n\nВторая ошибка — прятать блокеры. В англоязычной культуре сказать «I'm blocked on X» — не признание слабости, а нормальная и ожидаемая часть ритуала: стендап существует именно для того, чтобы блокеры всплывали за минуты, а не за дни.\n\nПолезно освоить и лексику вокруг спринта: backlog, grooming, refinement, sprint planning, retro, demo, velocity, story points, definition of done. На этих словах строится любое Agile-обсуждение, и они одинаковы почти во всех компаниях.\n\nОтдельно стоит запомнить формулы деликатного переноса обсуждения: «let's take this offline», «let's follow up after the call». Они спасают стендап от превращения в получасовое совещание, и их использование сразу выдаёт человека, который умеет работать в процессе.\n\nИ последний совет: заготовьте свой стендап заранее в двух-трёх предложениях. Не читайте с листа дословно, но держите структуру перед глазами. Через две недели она перейдёт в автоматический режим, и заготовка станет не нужна.",
+  "cards": [
+    {
+      "id": "en-standup-1",
+      "question": "Как начать свой стендап?",
+      "answer": "Схема: yesterday → today → blockers. Начинают просто и без вступлений. Полезно назвать конкретный результат, а не процесс.",
+      "example": "Yesterday I finished the retry logic and opened a PR.\n# Вчера я закончил логику ретраев и открыл PR.\nToday I'm working on the integration tests.\n# Сегодня я делаю интеграционные тесты.\nNo blockers on my side.\n# Блокеров с моей стороны нет."
+    },
+    {
+      "id": "en-standup-2",
+      "question": "Как сказать, что задача почти готова?",
+      "answer": "Полезные формулы: it's almost done, it's in review, I'm wrapping it up, it should be ready by end of day (EOD). Избегайте расплывчатого «I'm working on it» без срока.",
+      "example": "It's almost done — I just need to add tests.\n# Почти готово, осталось добавить тесты.\nI'm wrapping up the config changes today.\n# Сегодня добиваю правки конфига.\nIt's in review, waiting for one more approval.\n# На ревью, ждём ещё одно одобрение."
+    },
+    {
+      "id": "en-standup-3",
+      "question": "Как сообщить о блокере и попросить помощь?",
+      "answer": "Формула: I'm blocked on X, I need Y from Z. Если нужна помощь: could someone help me with…? / I could use a hand with… Просить помощь на стендапе — норма, а не слабость.",
+      "example": "I'm blocked on the staging database — I need credentials from the platform team.\n# Я заблокирован из-за базы на стейдже: нужны креды от платформенной команды.\nI could use a hand with the Kafka config.\n# Мне бы помощь с конфигом Kafka.\nWho can review my PR today?\n# Кто может посмотреть мой PR сегодня?"
+    },
+    {
+      "id": "en-standup-4",
+      "question": "Как сказать, что задача затянулась?",
+      "answer": "Честно и с причиной: it's taking longer than expected, I underestimated it, I hit an unexpected issue. Затем — новый прогноз. Такая формулировка воспринимается нормально, а молчание — нет.",
+      "example": "It's taking longer than I expected because of the flaky tests.\n# Это заняло больше времени, чем я ожидал, из-за нестабильных тестов.\nI underestimated the migration — I need one more day.\n# Я недооценил миграцию, нужен ещё день.\nRevised ETA is Thursday morning.\n# Обновлённая оценка — утро четверга."
+    },
+    {
+      "id": "en-standup-5",
+      "question": "«let's take this offline» — что это значит?",
+      "answer": "«Обсудим это отдельно, не на общей встрече». Не имеет отношения к интернету. Вежливый способ не тратить время всей команды на детали, интересные двоим.",
+      "example": "Good question — let's take this offline after the standup.\n# Хороший вопрос, обсудим отдельно после стендапа.\nThis is a deep topic, let's follow up in a separate call.\n# Это большая тема, давайте вернёмся к ней отдельным созвоном.\nI'll grab you after this.\n# Поймаю тебя после этого."
+    },
+    {
+      "id": "en-standup-6",
+      "question": "backlog / grooming / refinement",
+      "answer": "Backlog — очередь задач. Grooming или refinement — встреча по причёсыванию бэклога: уточняют требования и оценки. Groom the backlog — привести бэклог в порядок.",
+      "example": "This ticket is still in the backlog.\n# Этот тикет пока в бэклоге.\nWe'll refine it at the next grooming session.\n# Мы уточним это на следующем груминге.\nThe backlog needs some grooming.\n# Бэклог надо причесать."
+    },
+    {
+      "id": "en-standup-7",
+      "question": "sprint planning / velocity / story points",
+      "answer": "Sprint planning — планирование спринта. Story points — условные единицы сложности. Velocity — сколько поинтов команда закрывает за спринт. Commit to — взять на себя объём.",
+      "example": "How many points can we commit to this sprint?\n# Сколько поинтов мы можем взять в этот спринт?\nOur velocity is around thirty points.\n# Наша скорость — около тридцати поинтов.\nI'd estimate this as a five.\n# Я бы оценил это на пять."
+    },
+    {
+      "id": "en-standup-8",
+      "question": "retro: как формулировать «что пошло не так»?",
+      "answer": "На ретро говорят о процессе, а не о людях. Шаблоны: what went well, what didn't go well, what we should try next. Формула без обвинения: «the deploy process was unclear», а не «Ivan broke it».",
+      "example": "What went well: we caught the bug before release.\n# Что было хорошо: мы поймали баг до релиза.\nWhat didn't go well: the rollback took too long.\n# Что было плохо: откат занял слишком много времени.\nAction item: document the rollback steps.\n# Пункт к действию: описать шаги отката."
+    },
+    {
+      "id": "en-standup-9",
+      "question": "definition of done / acceptance criteria",
+      "answer": "Definition of done — общее правило, когда задача считается сделанной (код, тесты, ревью, документация). Acceptance criteria — конкретные условия приёмки конкретного тикета.",
+      "example": "Does this meet our definition of done?\n# Это соответствует нашему определению готовности?\nThe acceptance criteria aren't clear to me.\n# Критерии приёмки мне не ясны.\nLet's add acceptance criteria before we estimate.\n# Давайте добавим критерии приёмки до оценки."
+    },
+    {
+      "id": "en-standup-10",
+      "question": "Как вежливо сказать, что задача не в приоритете?",
+      "answer": "Формулы: it's not a priority right now, let's deprioritize it, I'd rather focus on X first. Прямое «I don't want to do it» звучит грубо; принято аргументировать приоритетом, а не желанием.",
+      "example": "I'd rather focus on the incident follow-ups first.\n# Я бы сначала сосредоточился на задачах после инцидента.\nCan we deprioritize this until next sprint?\n# Можем понизить приоритет до следующего спринта?\nWhat should I drop if I pick this up?\n# Что мне отложить, если я возьму это?"
+    },
+    {
+      "id": "en-standup-11",
+      "question": "Как сказать, что вы что-то не сделали?",
+      "answer": "Без извинений на три абзаца: I didn't get to it yesterday, I had to switch to the incident. Причина + новый план. Слово «sorry» уместно один раз, дальше — по делу.",
+      "example": "I didn't get to the tests — the incident took most of my day.\n# Я не дошёл до тестов: инцидент забрал большую часть дня.\nI'll pick it up right after the standup.\n# Возьмусь за это сразу после стендапа.\nIt slipped to today.\n# Съехало на сегодня."
+    },
+    {
+      "id": "en-standup-12",
+      "question": "WIP / pick up / hand off",
+      "answer": "WIP (work in progress) — в работе. Pick up a ticket — взять задачу. Hand off — передать другому. Ещё частое: take it over the line — довести до конца.",
+      "example": "I have two tickets in WIP right now.\n# У меня сейчас два тикета в работе.\nI'll pick up the next one from the top of the board.\n# Возьму следующий сверху доски.\nCan you take it over the line while I'm on call?\n# Можешь довести это, пока я на дежурстве?"
+    },
+    {
+      "id": "en-standup-13",
+      "question": "Как попросить повторить, если не разобрали речь?",
+      "answer": "Нормальные вежливые формулы: sorry, could you repeat that? / I didn't catch the last part. / could you say that again, a bit slower? Просить повторить — обычная практика и на нативных созвонах.",
+      "example": "Sorry, I didn't catch the last part — could you repeat it?\n# Извини, я не разобрал последнюю часть, можешь повторить?\nCould you spell that name for me?\n# Можешь продиктовать это имя по буквам?\nJust to make sure I got it right: you want the fix today?\n# Чтобы убедиться, что я понял правильно: фикс нужен сегодня?"
+    },
+    {
+      "id": "en-standup-14",
+      "question": "Как подтвердить, что вы всё поняли?",
+      "answer": "Полезно переформулировать своими словами: so, if I understand correctly, … / just to confirm, … Это одновременно проверка понимания и защита от ошибок из-за акцента или шума.",
+      "example": "So if I understand correctly, we deploy on Thursday, not Wednesday?\n# То есть, если я правильно понял, деплой в четверг, а не в среду?\nJust to confirm: I'm the one writing the postmortem.\n# Уточняю: постмортем пишу я.\nGot it, that makes sense.\n# Понял, логично."
+    },
+    {
+      "id": "en-standup-15",
+      "question": "Как договориться о встрече и времени?",
+      "answer": "Ключевые фразы: does that work for you? / can we move it to…? / I'm free after 3 PM your time. Всегда уточняйте часовой пояс — в распределённых командах это обязательная привычка.",
+      "example": "Does Thursday at 10 AM CET work for you?\n# Четверг, 10 утра по CET, тебе подходит?\nCan we move the sync one hour later?\n# Можем сдвинуть созвон на час позже?\nI'm free after 3 PM your time.\n# Я свободен после трёх по твоему времени."
+    },
+    {
+      "id": "en-standup-16",
+      "question": "Как закончить своё выступление на стендапе?",
+      "answer": "Коротко передайте слово: that's it from me. / that's all from my side. / I'm done, over to you. Не нужно длинных заключений — сигнал «я закончил» достаточно.",
+      "example": "That's it from me.\n# У меня всё.\nThat's all from my side, over to Maria.\n# С моей стороны всё, передаю Марии.\nNothing else to add.\n# Больше добавить нечего."
+    }
+  ]
+}

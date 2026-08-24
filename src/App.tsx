@@ -4,17 +4,19 @@ import { LessonView } from './components/LessonView'
 import { Roadmap } from './components/Roadmap'
 import { SettingsDialog } from './components/SettingsDialog'
 import { TutorPanel } from './components/TutorPanel'
-import { modules, totalCards } from './data'
+import { getTrack, tracks } from './data'
 import { useOnlineStatus } from './hooks/useOnlineStatus'
 import { useProgress } from './hooks/useProgress'
-import { DEFAULT_MODEL, loadSettings, saveSettings, type Settings } from './lib/db'
+import { DEFAULT_SETTINGS, loadSettings, saveSettings, type Provider, type Settings } from './lib/db'
+import type { TrackId } from './types'
 
 type View = { screen: 'roadmap' } | { screen: 'lesson'; moduleId: string } | { screen: 'deck'; moduleId: string }
 
 export default function App() {
   const [view, setView] = useState<View>({ screen: 'roadmap' })
   const [cardIndex, setCardIndex] = useState(0)
-  const [settings, setSettings] = useState<Settings>({ apiKey: '', model: DEFAULT_MODEL })
+  const [trackId, setTrackId] = useState<TrackId>('devops')
+  const [settings, setSettings] = useState<Settings>({ ...DEFAULT_SETTINGS })
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [tutorOpen, setTutorOpen] = useState(false)
 
@@ -25,19 +27,22 @@ export default function App() {
     void loadSettings().then(setSettings)
   }, [])
 
+  const track = useMemo(() => getTrack(trackId), [trackId])
+  const trackModules = track.modules
+
   const activeModule = useMemo(() => {
     if (view.screen === 'roadmap') return null
-    return modules.find((m) => m.id === view.moduleId) ?? null
-  }, [view])
+    return trackModules.find((m) => m.id === view.moduleId) ?? null
+  }, [view, trackModules])
 
   const activeCard =
     view.screen === 'deck' && activeModule ? activeModule.cards[cardIndex] ?? null : null
 
   const doneTotal = useMemo(
-    () => modules.reduce((sum, m) => sum + m.cards.filter((c) => known.has(c.id)).length, 0),
-    [known]
+    () => trackModules.reduce((sum, m) => sum + m.cards.filter((c) => known.has(c.id)).length, 0),
+    [known, trackModules]
   )
-  const overallPercent = Math.round((doneTotal / totalCards) * 100)
+  const overallPercent = Math.round((doneTotal / track.totalCards) * 100)
 
   const openModule = (moduleId: string) => {
     setCardIndex(0)
@@ -45,7 +50,7 @@ export default function App() {
   }
 
   const startDeck = (moduleId: string) => {
-    const module = modules.find((m) => m.id === moduleId)
+    const module = trackModules.find((m) => m.id === moduleId)
     const firstUnknown = module?.cards.findIndex((c) => !known.has(c.id)) ?? 0
     setCardIndex(firstUnknown > 0 ? firstUnknown : 0)
     setView({ screen: 'deck', moduleId })
@@ -57,16 +62,27 @@ export default function App() {
     setSettingsOpen(false)
   }
 
+  const switchProvider = (p: Provider) => {
+    const next = { ...settings, provider: p }
+    setSettings(next)
+    void saveSettings(next)
+  }
+
+  const switchTrack = (id: TrackId) => {
+    setTrackId(id)
+    setView({ screen: 'roadmap' })
+  }
+
   const tutor = (
     <TutorPanel
       online={online}
       checking={checking}
-      apiKey={settings.apiKey}
-      model={settings.model}
+      settings={settings}
       card={activeCard}
       module={activeModule}
       onRecheck={() => void recheck()}
       onOpenSettings={() => setSettingsOpen(true)}
+      onSwitchProvider={switchProvider}
     />
   )
 
@@ -90,7 +106,7 @@ export default function App() {
               />
             </div>
             <span className="font-mono text-xs text-slate-500">
-              {doneTotal}/{totalCards}
+              {doneTotal}/{track.totalCards}
             </span>
           </div>
 
@@ -122,7 +138,13 @@ export default function App() {
       <div className="mx-auto flex max-w-6xl gap-6 px-4 py-6 pb-24 lg:pb-6">
         <main className="min-w-0 flex-1">
           {view.screen === 'roadmap' && (
-            <Roadmap modules={modules} known={known} onOpen={openModule} />
+            <Roadmap
+              track={track}
+              tracks={tracks}
+              known={known}
+              onOpen={openModule}
+              onSwitchTrack={switchTrack}
+            />
           )}
 
           {view.screen === 'lesson' && activeModule && (

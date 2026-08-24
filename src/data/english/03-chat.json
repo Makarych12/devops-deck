@@ -1,0 +1,105 @@
+{
+  "id": "en-chat",
+  "title": "Переписка в Slack и вежливость",
+  "order": 3,
+  "color": "#C084F5",
+  "lesson": "В распределённых командах 80% общения — текст: Slack, тикеты, комментарии. Хорошая новость: писать проще, чем говорить, есть время подумать. Плохая: в тексте нет интонации, и прямой перевод русских формулировок часто звучит резче, чем вы задумали.\n\nГлавный принцип англоязычной деловой переписки — «мягкая упаковка прямого смысла». Смысл сообщения прямой и конкретный, а форма смягчена вспомогательными словами: could you, would you mind, I think, maybe, a quick question. Русское «сделай это сегодня» в буквальном переводе звучит как приказ, поэтому пишут «could you take a look at this today?».\n\nВторой принцип — уважение к времени. Один вопрос — одно сообщение, контекст сразу, без «привет» отдельным сообщением и десятисекундной паузы. Хороший запрос содержит: что нужно, зачем, к какому сроку и ссылку.\n\nТретий принцип — благодарность и признание. Короткие «thanks for the quick review», «good catch», «nice find» стоят почти ничего и заметно улучшают отношения в команде. Это не формальность: в англоязычной культуре их отсутствие читается как холодность.\n\nОтдельно стоит выучить набор сокращений, без которых чат непонятен: FYI, IMO, AFAIK, ASAP, EOD, LGTM, PTAL, WFH, OOO, TL;DR, nit. Они экономят время, но их не используют в письмах наружу клиенту — там пишут полностью.\n\nИ важное про тон: восклицательные знаки в англоязычном чате мягче, чем кажется русскому глазу, а вот КАПС и точка в конце короткого ответа («No.») читаются как раздражение. Смайлики и эмодзи в большинстве IT-команд нормальны и снижают риск, что нейтральное сообщение прочтут как недовольство.",
+  "cards": [
+    {
+      "id": "en-chat-1",
+      "question": "Как вежливо попросить сделать что-то?",
+      "answer": "Стандарт: Could you …? / Would you mind …ing? / Any chance you could …? Прямой императив («Do this») в чате звучит как приказ, кроме случаев инцидента, где краткость уместна.",
+      "example": "Could you take a look at this PR when you get a chance?\n# Можешь посмотреть этот PR, когда будет время?\nWould you mind rerunning the pipeline?\n# Не мог бы ты перезапустить пайплайн?\nAny chance you could share the logs?\n# Есть шанс, что ты пришлёшь логи?"
+    },
+    {
+      "id": "en-chat-2",
+      "question": "Как задать вопрос, не выглядя навязчивым?",
+      "answer": "Полезные обёртки: quick question — … / just wondering … / do you happen to know …? Они снижают давление и показывают, что ответ не требуется немедленно.",
+      "example": "Quick question: is the staging DB shared between teams?\n# Быстрый вопрос: база на стейдже общая между командами?\nJust wondering if the release is still planned for Friday.\n# Просто интересуюсь, релиз всё ещё планируется на пятницу?\nDo you happen to know who owns this service?\n# Ты случайно не знаешь, кто отвечает за этот сервис?"
+    },
+    {
+      "id": "en-chat-3",
+      "question": "Как напомнить о себе, если не отвечают?",
+      "answer": "Мягкие формулы: just a gentle nudge / following up on this / bumping this up. Обвинительное «you didn't answer» не используют; вместо этого повторяют суть и срок.",
+      "example": "Gentle nudge on this — I need it before the release.\n# Мягко напоминаю: мне это нужно до релиза.\nFollowing up on my question from yesterday.\n# Возвращаюсь к своему вчерашнему вопросу.\nNo rush, just making sure it didn't get lost.\n# Не срочно, просто проверяю, что не потерялось."
+    },
+    {
+      "id": "en-chat-4",
+      "question": "Как сказать «нет» и отказаться от задачи?",
+      "answer": "Без прямого «no»: I won't be able to take this on this week / I'd love to help, but … / that's not something I can commit to right now. Отказ всегда сопровождают причиной и альтернативой.",
+      "example": "I won't be able to get to this before Thursday — would that still work?\n# Я не успею взяться за это до четверга, так подойдёт?\nI'd love to help, but I'm on call this week.\n# Хотел бы помочь, но я на дежурстве на этой неделе.\nCan we find someone else for this one?\n# Можем найти кого-то другого на эту задачу?"
+    },
+    {
+      "id": "en-chat-5",
+      "question": "Как сказать, что вы не согласны?",
+      "answer": "Схема «согласие + возражение»: I see your point, but … / I'm not sure I agree, here's why … / I'd push back on that a bit. Прямое «you're wrong» в рабочем чате почти не встречается.",
+      "example": "I see your point, but I think the risk is higher than it looks.\n# Понимаю твою мысль, но, кажется, риск выше, чем выглядит.\nI'm not sure I agree — the metrics show something different.\n# Не уверен, что согласен: метрики показывают другое.\nCan I offer a different angle?\n# Можно предложить другой взгляд?"
+    },
+    {
+      "id": "en-chat-6",
+      "question": "Сокращения: FYI, IMO, AFAIK, TL;DR",
+      "answer": "FYI — «к сведению». IMO / IMHO — «по-моему». AFAIK — «насколько я знаю». TL;DR — краткое резюме длинного текста. В письмах наружу лучше писать полностью.",
+      "example": "FYI: the staging cluster will be down for an hour.\n# К сведению: стейдж-кластер будет недоступен час.\nIMO we should ship it behind a feature flag.\n# По-моему, стоит выпустить это за фиче-флагом.\nTL;DR: the fix works, but we need a proper test.\n# Коротко: фикс работает, но нужен нормальный тест."
+    },
+    {
+      "id": "en-chat-7",
+      "question": "Сокращения: LGTM, PTAL, nit, WIP",
+      "answer": "LGTM (looks good to me) — одобряю. PTAL (please take another look) — посмотри ещё раз. Nit (nitpick) — мелкое придирчивое замечание. WIP — в работе, не финальная версия.",
+      "example": "LGTM, feel free to merge.\n# Мне нравится, можешь мержить.\nPTAL — I addressed all comments.\n# Посмотри ещё раз, я закрыл все комментарии.\nNit: extra blank line here.\n# Мелочь: тут лишняя пустая строка."
+    },
+    {
+      "id": "en-chat-8",
+      "question": "Сокращения: OOO, WFH, EOD, ASAP",
+      "answer": "OOO (out of office) — не на работе, в отпуске. WFH — работаю из дома. EOD — до конца рабочего дня. ASAP — как можно скорее (звучит давяще, используйте только когда правда срочно).",
+      "example": "I'm OOO next week, Anna will cover for me.\n# Меня не будет на следующей неделе, Анна прикроет.\nWFH today, ping me on Slack.\n# Сегодня из дома, пиши в Slack.\nI'll have it ready by EOD.\n# Сделаю к концу дня."
+    },
+    {
+      "id": "en-chat-9",
+      "question": "Как правильно попросить помощь, чтобы быстро ответили?",
+      "answer": "Формула: контекст + что уже пробовали + конкретный вопрос + ссылка. Сообщение «it doesn't work, help» вызывает три уточняющих вопроса и теряет час.",
+      "example": "Deploy to staging fails at the migration step (log: <link>).\nI already checked credentials and re-ran the job.\nAny idea what else could lock the table?\n# Контекст, что проверено, конкретный вопрос — так отвечают быстро."
+    },
+    {
+      "id": "en-chat-10",
+      "question": "Как поблагодарить по-разному?",
+      "answer": "Варианты по силе: thanks / thanks a lot / thanks for the quick turnaround / really appreciate it / that saved me a ton of time. За находку в код-ревью говорят good catch.",
+      "example": "Thanks for the quick turnaround!\n# Спасибо за быструю реакцию!\nGood catch, I completely missed that.\n# Хорошая находка, я это совсем пропустил.\nReally appreciate the help with the cluster.\n# Правда благодарен за помощь с кластером."
+    },
+    {
+      "id": "en-chat-11",
+      "question": "Как извиниться за ошибку, не разводя драму?",
+      "answer": "Коротко, по делу, с планом: my bad (неформально) / sorry about that / that was on me. Дальше сразу — что делаете, чтобы исправить. Долгие самобичевания в англоязычной культуре не приняты.",
+      "example": "My bad — I pushed the wrong config. Reverting now.\n# Моя ошибка, я запушил не тот конфиг. Откатываю.\nThat was on me, I'll add a check to prevent it.\n# Это моя вина, добавлю проверку, чтобы не повторилось.\nSorry about the noise, false alarm.\n# Извините за шум, ложная тревога."
+    },
+    {
+      "id": "en-chat-12",
+      "question": "Как написать, что вы уходите с дежурства или в отпуск?",
+      "answer": "Стандартная передача: I'm handing over to X / X is covering for me / I'll be back on Monday. Обязательно указать, кто прикрывает и где лежит контекст.",
+      "example": "I'm OOO from Monday to Friday. Dmitry is covering on-call.\n# Меня не будет с понедельника по пятницу, Дмитрий на дежурстве.\nHandover notes are in the doc: <link>.\n# Заметки по передаче дел в документе.\nBack online on the 14th.\n# Снова в строю четырнадцатого."
+    },
+    {
+      "id": "en-chat-13",
+      "question": "Как аккуратно поторопить без давления?",
+      "answer": "Мягко: is there any update on …? / how's it looking? / do you have an ETA? Слово ASAP лучше держать для настоящих срочностей, иначе оно перестаёт работать.",
+      "example": "Any update on the certificate renewal?\n# Есть новости по обновлению сертификата?\nHow's the review looking? Release is tomorrow.\n# Как продвигается ревью? Релиз завтра.\nDo you have an ETA I can share with the team?\n# Есть оценка срока, которую я могу передать команде?"
+    },
+    {
+      "id": "en-chat-14",
+      "question": "Как перевести обсуждение в звонок?",
+      "answer": "Полезные фразы: this might be easier on a call / do you have five minutes to hop on a call? / want to jump on a quick huddle? Hop on и jump on — обычные разговорные варианты.",
+      "example": "This might be easier on a call — do you have five minutes?\n# Это проще обсудить голосом, есть пять минут?\nWant to hop on a quick call?\n# Заскочим на короткий созвон?\nI'll send a Zoom link.\n# Скину ссылку на Zoom."
+    },
+    {
+      "id": "en-chat-15",
+      "question": "Как отвечать в ветке инцидента?",
+      "answer": "Короткие фактические апдейты без эмоций: on it / looking / mitigated / all clear. Указывайте время и следующий шаг — это то, что нужно всем читающим.",
+      "example": "On it — checking the database connections now.\n# Взял, проверяю соединения с базой.\nMitigated: rolled back to 1.4.2, error rate is back to normal.\n# Локализовано: откатились на 1.4.2, ошибки в норме.\nAll clear. Postmortem tomorrow at 11.\n# Всё в порядке. Постмортем завтра в 11."
+    },
+    {
+      "id": "en-chat-16",
+      "question": "Тон: что читается грубо, хотя вы так не думали?",
+      "answer": "Резко звучат: односложные ответы с точкой («No.»), КАПС, «you should have…», «why did you…», «obviously». Мягче: «one thing to consider…», «what do you think about…», «I might be missing something, but…».",
+      "example": "резко:  Why did you deploy without tests?\nмягче:  Was there a reason we skipped tests here?\n# Тот же вопрос, но без обвинения — и ответ получите содержательный."
+    }
+  ]
+}
