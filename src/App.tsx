@@ -42,7 +42,7 @@ export default function App() {
     () => trackModules.reduce((sum, m) => sum + m.cards.filter((c) => known.has(c.id)).length, 0),
     [known, trackModules]
   )
-  const overallPercent = Math.round((doneTotal / track.totalCards) * 100)
+  const overallPercent = track.totalCards > 0 ? Math.round((doneTotal / track.totalCards) * 100) : 0
 
   const openModule = (moduleId: string) => {
     setCardIndex(0)
@@ -139,6 +139,7 @@ export default function App() {
         <main className="min-w-0 flex-1">
           {view.screen === 'roadmap' && (
             <Roadmap
+              key={trackId}
               track={track}
               tracks={tracks}
               known={known}

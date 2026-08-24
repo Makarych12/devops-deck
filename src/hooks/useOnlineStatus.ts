@@ -4,7 +4,7 @@ import { probeOnline } from '../lib/network'
 const RECHECK_INTERVAL_MS = 30000
 
 export function useOnlineStatus() {
-  const [online, setOnline] = useState(false)
+  const [online, setOnline] = useState(typeof navigator !== 'undefined' ? navigator.onLine : false)
   const [checking, setChecking] = useState(true)
   const inFlight = useRef(false)
 

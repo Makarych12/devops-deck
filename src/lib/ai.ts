@@ -95,7 +95,9 @@ async function askOpenRouter(
     method: 'POST',
     headers: {
       'content-type': 'application/json',
-      authorization: `Bearer ${apiKey}`
+      authorization: `Bearer ${apiKey}`,
+      'HTTP-Referer': window.location.origin,
+      'X-Title': 'DevOps Deck'
     },
     body: JSON.stringify({
       model,
@@ -112,6 +114,9 @@ async function askOpenRouter(
       detail = JSON.parse(text)?.error?.message ?? text
     } catch {
       /* not JSON */
+    }
+    if (response.status === 404) {
+      throw new Error(`OpenRouter: модель «${model}» недоступна. Проверьте: 1) имя модели на openrouter.ai/models 2) настройки приватности — openrouter.ai/settings/privacy (включите Prompt training) 3) баланс аккаунта.`)
     }
     throw new Error(`OpenRouter API ${response.status}: ${detail || 'запрос отклонён'}`)
   }

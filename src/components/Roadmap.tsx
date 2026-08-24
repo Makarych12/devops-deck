@@ -11,7 +11,7 @@ type RoadmapProps = {
 export function Roadmap({ track, tracks, known, onOpen, onSwitchTrack }: RoadmapProps) {
   const modules = track.modules
   return (
-    <div className="space-y-3">
+    <div className="animate-fadeInUp space-y-3">
       <div className="mb-2 flex gap-2">
         {tracks.map((t) => (
           <button
