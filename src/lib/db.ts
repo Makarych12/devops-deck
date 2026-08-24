@@ -52,8 +52,8 @@ export type Settings = {
   openrouterModel: string
 }
 
-export const DEFAULT_GEMINI_MODEL = 'gemini-2.0-flash'
-export const DEFAULT_OPENROUTER_MODEL = 'deepseek/deepseek-v3.2'
+export const DEFAULT_GEMINI_MODEL = 'gemini-3.7-flash'
+export const DEFAULT_OPENROUTER_MODEL = 'deepseek/deepseek-v4-flash-latest'
 
 export const DEFAULT_SETTINGS: Settings = {
   provider: 'gemini',

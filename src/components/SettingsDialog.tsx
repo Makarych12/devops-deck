@@ -7,21 +7,28 @@ import {
 } from '../lib/db'
 
 const OPENROUTER_MODELS = [
-  { id: 'deepseek/deepseek-v3.2', label: 'DeepSeek V3.2 — дешёвый, умный' },
-  { id: 'deepseek/deepseek-chat-v3-0324', label: 'DeepSeek V3 0324 — дешёвый чат' },
-  { id: 'deepseek/deepseek-r1', label: 'DeepSeek R1 — reasoning, дороже' },
-  { id: 'google/gemini-2.0-flash-001', label: 'Gemini 2.0 Flash — быстро' },
-  { id: 'meta-llama/llama-3.3-70b-instruct', label: 'Llama 3.3 70B — бесплатно с лимитом' },
-  { id: 'qwen/qwen-2.5-72b-instruct', label: 'Qwen 2.5 72B — дешёвый' },
-  { id: 'anthropic/claude-3.5-sonnet', label: 'Claude 3.5 Sonnet — дорого, качественно' },
-  { id: 'openai/gpt-4o-mini', label: 'GPT-4o mini — дёшево' }
+  { id: 'deepseek/deepseek-v4-flash-latest', label: 'DeepSeek V4 Flash (latest) — #1 на OpenRouter, дешёвый' },
+  { id: 'deepseek/deepseek-v4-flash-0731', label: 'DeepSeek V4 Flash 0731 — стабильно, дешёвый' },
+  { id: 'deepseek/deepseek-v4-pro-0423', label: 'DeepSeek V4 Pro — умнее, дороже' },
+  { id: 'openai/gpt-5.6-luna', label: 'GPT-5.6 Luna — топовый от OpenAI' },
+  { id: 'openai/gpt-5.6-sol', label: 'GPT-5.6 Sol — лучший для кода' },
+  { id: 'google/gemini-3.7-flash', label: 'Gemini 3.7 Flash — быстро, дёшево' },
+  { id: 'anthropic/claude-opus-5', label: 'Claude Opus 5 — топовый Anthropic, дорого' },
+  { id: 'anthropic/claude-sonnet-4', label: 'Claude Sonnet 4 — баланс цены и качества' },
+  { id: 'x-ai/grok-4.6', label: 'Grok 4.6 — от xAI' },
+  { id: 'nvidia/nemotron-3-ultra:free', label: 'Nemotron 3 Ultra — бесплатно, 1M контекст' },
+  { id: 'z-ai/glm-5.2', label: 'GLM 5.2 — от Z.ai, дешёвый' },
+  { id: 'meta/muse-spark-1.2', label: 'Muse Spark 1.2 — reasoning от Meta' },
+  { id: 'stealth/ox-alpha', label: 'Ox Alpha — бесплатно, reasoning' }
 ]
 
 const GEMINI_MODELS = [
-  { id: 'gemini-2.0-flash', label: 'Gemini 2.0 Flash — быстро, бесплатно' },
-  { id: 'gemini-2.5-flash', label: 'Gemini 2.5 Flash — новее' },
-  { id: 'gemini-2.5-pro', label: 'Gemini 2.5 Pro — умнее, лимит больше' },
-  { id: 'gemini-1.5-flash', label: 'Gemini 1.5 Flash — стабильный' }
+  { id: 'gemini-3.7-flash', label: 'Gemini 3.7 Flash — новейший (авг 2026), бесплатно' },
+  { id: 'gemini-3.6-flash', label: 'Gemini 3.6 Flash — стабильно, бесплатно' },
+  { id: 'gemini-3.5-flash', label: 'Gemini 3.5 Flash — проверенный, бесплатно' },
+  { id: 'gemini-3.5-flash-lite', label: 'Gemini 3.5 Flash-Lite — самый дешёвый' },
+  { id: 'gemini-3.1-pro-preview', label: 'Gemini 3.1 Pro Preview — умнейший, лимит' },
+  { id: 'gemini-2.5-pro', label: 'Gemini 2.5 Pro — до окт 2026' }
 ]
 
 type SettingsDialogProps = {
