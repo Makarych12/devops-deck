@@ -145,10 +145,10 @@ export function TutorPanel({
             </div>
           )}
           <span
-            className={`h-2 w-2 shrink-0 rounded-full ${
-              checking ? 'bg-amber' : online ? 'bg-teal' : 'bg-red'
+            className={`h-2 w-2 shrink-0 rounded-full transition-colors duration-300 ${
+              online ? 'bg-teal' : 'bg-red'
             }`}
-            title={checking ? 'проверка сети' : online ? 'сеть есть' : 'сети нет'}
+            title={checking ? 'проверка сети…' : online ? 'сеть есть' : 'сети нет'}
           />
         </div>
       </header>

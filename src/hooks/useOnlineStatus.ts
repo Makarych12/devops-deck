@@ -7,15 +7,19 @@ export function useOnlineStatus() {
   const [online, setOnline] = useState(typeof navigator !== 'undefined' ? navigator.onLine : false)
   const [checking, setChecking] = useState(true)
   const inFlight = useRef(false)
+  const isFirstCheck = useRef(true)
 
   const check = useCallback(async () => {
     if (inFlight.current) return
     inFlight.current = true
-    setChecking(true)
+    if (isFirstCheck.current) setChecking(true)
     const result = await probeOnline()
     inFlight.current = false
     setOnline(result)
-    setChecking(false)
+    if (isFirstCheck.current) {
+      setChecking(false)
+      isFirstCheck.current = false
+    }
   }, [])
 
   useEffect(() => {
