@@ -54,7 +54,7 @@ export function TutorPanel({
     }
   }, [online])
 
-  useEffect(() => () => abortRef.current?.abort(), [])
+  useEffect(() => () => { abortRef.current?.abort() }, [])
 
   const send = async (text: string) => {
     const question = text.trim()
@@ -79,7 +79,8 @@ export function TutorPanel({
         module,
         signal: controller.signal
       })
-      setMessages([...history, { role: 'assistant', content: reply || '(пустой ответ)' }])
+      if (controller.signal.aborted) return
+      setMessages(prev => [...prev, { role: 'assistant', content: reply || '(пустой ответ)' }])
     } catch (err) {
       if (controller.signal.aborted) {
         setError('Запрос прерван: сеть пропала или истёк таймаут.')
@@ -108,6 +109,21 @@ export function TutorPanel({
           </p>
         </div>
         <div className="ml-auto flex items-center gap-2">
+          {available && messages.length > 0 && (
+            <button
+              type="button"
+              data-no-flip
+              onClick={(e) => {
+                e.stopPropagation()
+                setMessages([])
+                setError(null)
+              }}
+              className="font-mono text-[10px] text-slate-500 transition-colors hover:text-slate-300"
+              title="Очистить чат"
+            >
+              ✕
+            </button>
+          )}
           {available && (
             <div className="flex rounded-lg border border-border bg-black/30 p-0.5" data-no-flip>
               {(['gemini', 'openrouter'] as Provider[]).map((p) => (
@@ -186,8 +202,23 @@ export function TutorPanel({
             )}
 
             {error && (
-              <div className="rounded-lg border border-red/40 bg-red/10 px-3 py-2 text-xs text-red">
-                {error}
+              <div className="space-y-2">
+                <div className="rounded-lg border border-red/40 bg-red/10 px-3 py-2 text-xs text-red">
+                  {error}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const lastUser = [...messages].reverse().find(m => m.role === 'user')
+                    if (lastUser) {
+                      setMessages(prev => prev.slice(0, prev.findIndex(m => m === lastUser)))
+                      void send(lastUser.content)
+                    }
+                  }}
+                  className="btn w-full border-red/40 text-red"
+                >
+                  Повторить запрос
+                </button>
               </div>
             )}
           </div>

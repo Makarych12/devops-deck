@@ -130,8 +130,12 @@ export async function askTutor(options: AskOptions): Promise<string> {
 
   const controller = new AbortController()
   const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
-  const onAbort = () => controller.abort()
-  signal?.addEventListener('abort', onAbort)
+
+  if (signal?.aborted) {
+    controller.abort()
+  } else {
+    signal?.addEventListener('abort', () => controller.abort(), { once: true })
+  }
 
   try {
     const system = buildSystem(card, module)
@@ -142,6 +146,5 @@ export async function askTutor(options: AskOptions): Promise<string> {
     }
   } finally {
     clearTimeout(timer)
-    signal?.removeEventListener('abort', onAbort)
   }
 }
