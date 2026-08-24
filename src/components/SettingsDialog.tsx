@@ -6,6 +6,24 @@ import {
   type Settings
 } from '../lib/db'
 
+const OPENROUTER_MODELS = [
+  { id: 'deepseek/deepseek-v3.2', label: 'DeepSeek V3.2 — дешёвый, умный' },
+  { id: 'deepseek/deepseek-chat-v3-0324', label: 'DeepSeek V3 0324 — дешёвый чат' },
+  { id: 'deepseek/deepseek-r1', label: 'DeepSeek R1 — reasoning, дороже' },
+  { id: 'google/gemini-2.0-flash-001', label: 'Gemini 2.0 Flash — быстро' },
+  { id: 'meta-llama/llama-3.3-70b-instruct', label: 'Llama 3.3 70B — бесплатно с лимитом' },
+  { id: 'qwen/qwen-2.5-72b-instruct', label: 'Qwen 2.5 72B — дешёвый' },
+  { id: 'anthropic/claude-3.5-sonnet', label: 'Claude 3.5 Sonnet — дорого, качественно' },
+  { id: 'openai/gpt-4o-mini', label: 'GPT-4o mini — дёшево' }
+]
+
+const GEMINI_MODELS = [
+  { id: 'gemini-2.0-flash', label: 'Gemini 2.0 Flash — быстро, бесплатно' },
+  { id: 'gemini-2.5-flash', label: 'Gemini 2.5 Flash — новее' },
+  { id: 'gemini-2.5-pro', label: 'Gemini 2.5 Pro — умнее, лимит больше' },
+  { id: 'gemini-1.5-flash', label: 'Gemini 1.5 Flash — стабильный' }
+]
+
 type SettingsDialogProps = {
   open: boolean
   settings: Settings
@@ -105,15 +123,16 @@ export function SettingsDialog({ open, settings, onSave, onClose }: SettingsDial
           </label>
           <label className="mt-3 block text-xs font-medium text-slate-400">
             Модель
-            <input
-              type="text"
+            <select
               value={geminiModel}
               onChange={(event) => setGeminiModel(event.target.value)}
-              placeholder={DEFAULT_GEMINI_MODEL}
-              spellCheck={false}
               className="mt-1 w-full rounded-lg border border-border bg-black/30 px-3 py-2 font-mono text-[13px]
-                         text-slate-200 placeholder:text-slate-600 focus:border-agent/60 focus:outline-none"
-            />
+                         text-slate-200 focus:border-agent/60 focus:outline-none"
+            >
+              {GEMINI_MODELS.map((m) => (
+                <option key={m.id} value={m.id}>{m.label}</option>
+              ))}
+            </select>
           </label>
         </div>
 
@@ -137,16 +156,20 @@ export function SettingsDialog({ open, settings, onSave, onClose }: SettingsDial
           </label>
           <label className="mt-3 block text-xs font-medium text-slate-400">
             Модель
-            <input
-              type="text"
+            <select
               value={openrouterModel}
               onChange={(event) => setOpenrouterModel(event.target.value)}
-              placeholder={DEFAULT_OPENROUTER_MODEL}
-              spellCheck={false}
               className="mt-1 w-full rounded-lg border border-border bg-black/30 px-3 py-2 font-mono text-[13px]
-                         text-slate-200 placeholder:text-slate-600 focus:border-agent/60 focus:outline-none"
-            />
+                         text-slate-200 focus:border-agent/60 focus:outline-none"
+            >
+              {OPENROUTER_MODELS.map((m) => (
+                <option key={m.id} value={m.id}>{m.label}</option>
+              ))}
+            </select>
           </label>
+          <p className="mt-2 text-[11px] text-slate-500">
+            Если нужной модели нет в списке — полный каталог: openrouter.ai/models
+          </p>
         </div>
 
         <div className="mt-5 flex gap-2">
