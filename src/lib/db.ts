@@ -53,7 +53,7 @@ export type Settings = {
 }
 
 export const DEFAULT_GEMINI_MODEL = 'gemini-2.0-flash'
-export const DEFAULT_OPENROUTER_MODEL = 'google/gemini-2.0-flash-exp:free'
+export const DEFAULT_OPENROUTER_MODEL = 'google/gemini-2.0-flash-001'
 
 export const DEFAULT_SETTINGS: Settings = {
   provider: 'gemini',
